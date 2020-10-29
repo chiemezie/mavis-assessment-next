@@ -1,65 +1,140 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import {Component} from 'react'; 
+import Head from 'next/head'; 
+import Teacher from '../components/teacher'; 
+import Welcome from '../components/welcome'; 
+import MenuIcon from '../components/menuIcon'; 
+import Clock from '../components/clock';
+import Board from '../components/greenboard';
+import LeftShelf from '../components/leftShelf';
+import RightShelf from '../components/rightShelf'; 
+import BottomShelf from '../components/bottomShelf'; 
 
-export default function Home() {
-  return (
-    <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
+class Lesson1 extends Component { 
+    render(){ 
+        return (
+            <div className="container">
+                <Head>
+                    <title>Mavis Assessment Test</title>
+                    <link rel="icon" href="/favicon.ico" />
+                </Head>
+                <div className="teacherContainer">
+                    <Teacher />
+                </div> 
+                <div className="headerContainer">
+                    <Welcome /> 
+                </div> 
 
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
+                <div className="hamburger">
+                    <MenuIcon /> 
+                </div> 
+                <div className="clockContainer">
+                    <Clock /> 
+                </div> 
+                <Board />
+                <LeftShelf />
+                <RightShelf /> 
+                <div className="optionsContainer"></div>
+                <div className="bottomShelfContainer">
+                    <BottomShelf />
+                </div>
 
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
+                <style jsx>{`
+                    .container{ 
+                        background-color: #f5b799; 
+                        display: grid; 
+                        grid-template-columns: repeat(8, 1fr);
+                        grid-template-rows: repeat(20, 5vh);   
+                    } 
+    
+                    .teacherContainer{ 
+                        display: grid; 
+                        align-items: center; 
+                        justify-items: center; 
+                        grid-row: 1/6; 
+                        grid-column: 1/2; 
+                    } 
 
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
+                    .headerContainer{ 
+                        display: grid; 
+                        justify-items: center; 
+                        align-content: center; 
+                        grid-row: 1/4; 
+                        grid-column: 2/8; 
+                    } 
 
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
+                    .hamburger{ 
+                        grid-row: 1/3; 
+                        grid-column: 8/9; 
+                        align-self: center; 
+                        justify-self: end; 
+                        margin-right: 20px; 
+                        
+                    } 
 
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
+                    .clockContainer{ 
+                        grid-row: 3/6; 
+                        grid-column: 8/9;
+                        display: grid;
+                        align-content: center; 
+                        justify-content: center;
+                    } 
 
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
-    </div>
-  )
+                    .optionsContainer{ 
+                        background-color: gainsboro; 
+                        grid-row: 16/19; 
+                        grid-column: 2/8;
+                    } 
+
+                    .bottomShelfContainer{ 
+                        background-color: gainsboro; 
+                        border-top: 1rem solid  #D07026; 
+                        grid-column: 1/-1; 
+                        grid-row: 19/21; 
+                    }
+
+                    @media only screen and (max-width: 1200px){ 
+                        .teacherContainer{ 
+                            grid-row:1/5; 
+                        }
+                    } 
+
+                    @media only screen and (max-width: 1000px){ 
+                        .teacherContainer{ 
+                            grid-row:1/4; 
+                        }
+                    } 
+
+                    @media only screen and (max-width: 600px){ 
+                        .hamburger{ 
+                            margin-top: 4px; 
+                            align-self: start; 
+                            justify-self: end; 
+                            margin-right: 3px;
+                        } 
+
+                        .clockContainer{ 
+                            grid-row: 3/5; 
+                        } 
+
+                        .optionsContainer{ 
+                            grid-column: 1/-1; 
+                        } 
+
+                        .bottomShelfContainer{ 
+                            border-top: none; 
+                        }
+                    }
+                    @media only screen and (max-height: 600px) { 
+                        .container{ 
+                            grid-template-rows: none; 
+                        } 
+                    } 
+                `}</style>
+            </div>
+        );
+    }
 }
+
+
+export default Lesson1; 
