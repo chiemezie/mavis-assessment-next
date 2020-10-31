@@ -64,6 +64,7 @@ const Board = () => (
             @media only screen and (max-height: 600px){ 
                 .board{ 
                     grid-column: 1/-1; 
+                    grid-row-start: 7; 
                 }
             }
         `} </style>

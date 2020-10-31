@@ -1,7 +1,7 @@
 const MenuIcon = () => ( 
     <>
         <div className="menu">
-            <img className="icon"  src="/svg/home.svg"></img>
+            <img className="icon"  src="/home.svg"></img>
         </div>
         <style jsx> {`
             .menu{ 
