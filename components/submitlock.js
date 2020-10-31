@@ -38,6 +38,7 @@ class SubmitLock extends Component{
         display: grid; 
         padding-top: 18px; 
         align-content: center; 
+        cursor: pointer; 
     }
     .padlockMain {
       display: flex;

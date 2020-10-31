@@ -14,7 +14,13 @@ const TextOnly = (props) => (
                 .StyledText{ 
                     font-size: 4rem; 
                 }
-            } 
+            }  
+
+            @media only screen and (max-width: 700px){ 
+                .StyledText{ 
+                    font-size: 3.5rem; 
+                }
+            }
 
             @media only screen and (max-width: 460px){ 
                 .StyledText{ 

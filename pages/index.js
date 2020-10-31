@@ -8,10 +8,12 @@ import Board from '../components/greenboard';
 import LeftShelf from '../components/leftShelf';
 import RightShelf from '../components/rightShelf'; 
 import BottomShelf from '../components/bottomShelf'; 
+import AnswerBox from '../components/answerbox'; 
 
 
 class Lesson1 extends Component { 
-    render(){ 
+    render(){  
+        const options = ["a", "b", "c", "d"]; 
         return (
             <div className="container">
                 <Head>
@@ -34,7 +36,9 @@ class Lesson1 extends Component {
                 <Board />
                 <LeftShelf />
                 <RightShelf /> 
-                <div className="optionsContainer"></div>
+                <div className="optionsContainer">
+                <AnswerBox options={options}/> 
+                </div>
                 <div className="bottomShelfContainer">
                     <BottomShelf />
                 </div>
@@ -84,6 +88,8 @@ class Lesson1 extends Component {
                         background-color: gainsboro; 
                         grid-row: 16/19; 
                         grid-column: 2/8;
+                        padding-top: 1rem; 
+                        padding-left: 1rem; 
                     } 
 
                     .bottomShelfContainer{ 

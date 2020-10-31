@@ -1,13 +1,23 @@
 import TextAndBubble from './textAndBubble';
-import SubmitLock from './submitlock';  
+import ScoreBoard from './scoreboard'; 
+import SubmitLock from './submitlock'; 
 const Board = () => ( 
     <>
         <div className="board">
-            
-            <TextAndBubble>Good morning</TextAndBubble>
-            <TextAndBubble>Good afternoon</TextAndBubble>
-            <TextAndBubble>Good evening</TextAndBubble>
-            <SubmitLock/>
+            <div className="scoreBoardContainer">
+                <ScoreBoard /> 
+            </div> 
+            <div className="mainBoardContainer">
+                <TextAndBubble>Good morning</TextAndBubble>
+                <TextAndBubble>Good afternoon</TextAndBubble>
+                <TextAndBubble>Good evening</TextAndBubble>
+                <div className="submitContianer">
+                    <SubmitLock />
+                </div>
+                
+            </div>
+           
+           
             
         </div> 
         <style jsx> {` 
@@ -19,15 +29,28 @@ const Board = () => (
                 border-width: 1.4rem; 
                 border-style: ridge; 
                 border-width: 1.4rem; 
+                display: grid;  
+                grid-template-rows: 1rem 1fr; 
+                padding: 2rem;  
+            }  
+            .scoreBoardContainer{ 
+                display: grid; 
+            }
+            .mainBoardContainer{ 
                 display: grid; 
                 overflow: auto; 
-                justify-content: center; 
-                align-items: center; 
-                grid-template-columns: repeat(1, minmax(min-content, max-content)); 
-                
                 column-gap: 10px; 
-                padding: 2rem;  
+                justify-content: center; 
+                align-items: center;
+                grid-template-columns: minmax(min-content, max-content); 
             } 
+
+            .submitContianer{ 
+                justify-self: center; 
+            }
+            @media only screen and (max-width: 700px){ 
+                
+            }
 
             @media only screen and (max-width: 600px){ 
                 .board{ 
