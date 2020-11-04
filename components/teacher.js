@@ -1,7 +1,7 @@
 const Teacher = () => (
     <>
         {/* <img src="/teacher1.svg" alt="teacher1" className="teacher__icon"/>  */}
-        <div className="main"></div>
+        <div className="main talk"></div>
         <style jsx> {`
             .main{
                 width: 100%; 
@@ -9,9 +9,20 @@ const Teacher = () => (
                 background: no-repeat center/80% url("teacher1.svg"); 
             } 
 
+            .talk{ 
+                animation: talk .3s infinite; 
+            }
+
             @keyframes talk{ 
                 0% { 
                  background: no-repeat center/80% url("teacher1.svg");
+                }
+
+                50% { 
+                    background: no-repeat center/80% url("teacher2.svg");
+                } 
+                100%{ 
+                    background: no-repeat center/80% url("teacher1.svg");
                 }
             }
             {/* width: 80%; 
