@@ -1,8 +1,21 @@
 const Teacher = () => (
     <>
-        <img src="/teacher1.svg" alt="teacher1" className="teacher__icon"/> 
+        {/* <img src="/teacher1.svg" alt="teacher1" className="teacher__icon"/>  */}
+        <div className="main"></div>
         <style jsx> {`
-            width: 80%; 
+            .main{
+                width: 100%; 
+                height: 100%;  
+                background: no-repeat center/80% url("teacher1.svg"); 
+            } 
+
+            @keyframes talk{ 
+                0% { 
+                 background: no-repeat center/80% url("teacher1.svg");
+                }
+            }
+            {/* width: 80%; 
+             
             @media only screen and (max-width: 900px){ 
                 .teacher__icon{ 
                     width: 10rem; 
@@ -14,7 +27,7 @@ const Teacher = () => (
                 .teacher__icon{ 
                     width: 6rem; 
                 }
-            }
+            } */}
 
         `} </style>
     </>

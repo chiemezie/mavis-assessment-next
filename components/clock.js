@@ -65,6 +65,7 @@ class Clock extends Component {
                         grid-template-rows: 1fr 1fr; 
                         gap: .4rem; 
                         color: black;
+                        margin-top: 10px; 
                     } 
 
                     .clock__main{ 

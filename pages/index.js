@@ -108,7 +108,7 @@ class Lesson1 extends Component {
                     @media only screen and (max-width: 1000px){ 
                         .teacherContainer{ 
                             grid-row:1/4; 
-                        }
+                        } 
                     } 
 
                     @media only screen and (max-width: 600px){ 
@@ -118,6 +118,15 @@ class Lesson1 extends Component {
                             justify-self: end; 
                             margin-right: 3px;
                         } 
+
+                        .headerContainer{ 
+                            grid-column: 3/8;
+                            margin-top: 10px; 
+                            
+                        } 
+                        .teacherContainer{ 
+                            grid-column: 1/3; 
+                        }
 
                         .clockContainer{ 
                             grid-row: 3/5; 
@@ -130,7 +139,12 @@ class Lesson1 extends Component {
                         .bottomShelfContainer{ 
                             border-top: none; 
                         }
-                    }
+                    } 
+
+                    @media only screen and (max-width: 500px){ 
+                        
+                    } 
+
                     @media only screen and (max-height: 600px) { 
                         .container{ 
                             grid-template-rows: none; 
