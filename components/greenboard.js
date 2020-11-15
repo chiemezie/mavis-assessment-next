@@ -1,18 +1,37 @@
-import TextAndBubble from './textAndBubble';
+import TeacherAndText from './teacherAndText'; 
 import ScoreBoard from './scoreboard'; 
 import SubmitLock from './submitlock'; 
-const Board = () => ( 
+import AlphabetOption from './alphabetOption'; 
+const Board = (props) => {
+    //form the options that will be displayed below the question 
+    let options = null; 
+    if(props.selected && props.selected.type==="alphabet"){ 
+        options = props.selected.options.map((sel,index) => <AlphabetOption key={index} size="large" color = {sel.color} glow = {props.opglow}  clicked={()=>props.handleClick(index)} > {sel.content} </AlphabetOption> );
+    }  
+
+    let boardColor = '#218E8A'; 
+    if(props.mode==='correct'){ 
+        boardColor = 'green';
+    }
+    else if(props.mode ==='wrong'){ 
+        boardColor = 'red';
+    } 
+    else { 
+        boardColor = '#218E8A'; 
+    }
+
+    // iterate through the array of board content 
+    return( 
     <>
         <div className="board">
             <div className="scoreBoardContainer">
                 <ScoreBoard /> 
             </div> 
             <div className="mainBoardContainer">
-                <TextAndBubble>Good morning</TextAndBubble>
-                <TextAndBubble>Good afternoon</TextAndBubble>
-                <TextAndBubble>Good evening</TextAndBubble>
+                {props.content? props.content.map((cont,index) => <TeacherAndText key={index} tid={index} teachers={props.boardTeachers} handleTeacherClick = {() => props.handleTeacherClick(index)}>{cont}</TeacherAndText>) : null}
+                {options? options : null}
                 <div className="submitContianer">
-                    <SubmitLock />
+                    <SubmitLock glow= {props.submitGlow} clicked={props.handleSubmitClicked} submitted = {props.submitted}/>
                 </div>
                 
             </div>
@@ -23,7 +42,7 @@ const Board = () => (
         <style jsx> {` 
            
             .board{ 
-                background-color:  #218E8A; 
+                background-color:  ${boardColor}; 
                 grid-row: 4/16; 
                 grid-column: 2/8; 
                 border-width: 1.4rem; 
@@ -70,6 +89,6 @@ const Board = () => (
         `} </style>
     </>
     
-); 
+)}; 
 
 export default Board; 

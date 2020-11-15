@@ -6,10 +6,13 @@ const AnswerBox = (props) => {
     <>
             <div className="main">
                 <div className="optionsContainer">
-                    <AlphabetOption color="rgba(244, 150, 10, .7)" size="small">a</AlphabetOption>
-                    <AlphabetOption color="rgba(207, 217, 30, .7)" size="small">b</AlphabetOption>
-                    <AlphabetOption color="rgba(50, 173, 159, .7)" size="small">c</AlphabetOption>
-                    <AlphabetOption color="rgba(173, 50, 146, .7)" size="small">d</AlphabetOption>
+                    {props.options? props.options.map((option,index) => <AlphabetOption 
+                    color={option.color} 
+                    key={index}
+                    size="small" 
+                    glow={props.glow} 
+                    clicked={()=>props.handleClick(index)} 
+                    show={option.show} >{option.content}</AlphabetOption>) : null}
                 </div>
             </div>
             <style jsx> {`
@@ -18,7 +21,8 @@ const AnswerBox = (props) => {
                 //grid-template-columns: max-content 1fr; 
                 align-items: center;
                  
-            } 
+            }   
+            
             .optionsContainer { 
                 display: grid; 
                 grid-template-columns: repeat(4, 1fr);
@@ -27,6 +31,20 @@ const AnswerBox = (props) => {
             } 
             @media only screen and (max-width: 700px){ 
                 .optionsContainer{ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    
                     justify-content: center; 
                 }
             }

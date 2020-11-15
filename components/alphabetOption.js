@@ -1,18 +1,56 @@
-const AlphabetOption = (props) => (
+const AlphabetOption = (props) => {
+    let classes = []; 
+    classes.push(props.size); 
+    if(props.glow){ 
+        classes.push("glow"); 
+    }
+    return(
     <>
-        <div className={props.size}>{props.children}</div>
+        <div className={classes.join(' ')} onClick={props.clicked}>{props.children}</div>
         <style jsx> {`
             .small{ 
                 background-color : ${props.color}; 
                 border-radius: 20px; 
-                padding: 1rem 2.5rem; 
+                padding: .8rem 2.5rem; 
                 font-size: 6rem;
                 font-weight: 700;  
                 text-align: center; 
                 color: white; 
                 text-transform: uppercase; 
- 
-            } 
+                display: ${props.show? 'block' : 'none'};
+                cursor: pointer;  
+            }  
+
+            .large{ 
+                background-color : white; 
+                border-radius: 40px; 
+                padding: 0 4rem; 
+                font-size: 14rem;
+                font-weight: 700;  
+                text-align: center; 
+                color: ${props.color}; 
+                text-transform: uppercase; 
+                justify-self: center; 
+                cursor: pointer; 
+            }
+
+            .glow { 
+                    animation: glow 1.7s infinite; 
+                }
+            @keyframes glow{ 
+                    0% { 
+                        transform: scale(1); 
+                    } 
+
+                    50% { 
+                        transform: scale(1.2);
+                    }
+
+                    100% { 
+                        transform: scale(1); 
+                    } 
+
+                }
 
             .big{ 
                 background-color : ${props.color}; 
@@ -21,10 +59,15 @@ const AlphabetOption = (props) => (
                 .small{ 
                     font-size: 5rem; 
                     padding: .8rem 2rem; 
+                } 
+                .large{ 
+                    font-size: 10rem; 
+                    padding: 0 3rem; 
+                    border-radius: 25px; 
                 }
             } 
         `} </style>
     </>
-); 
+)}; 
 
 export default AlphabetOption;

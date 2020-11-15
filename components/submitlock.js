@@ -1,28 +1,17 @@
-import {Component} from 'react'; 
 
-class SubmitLock extends Component{  
-    state = { 
-        unlocked: true 
-    } 
+const SubmitLock  = (props) => {  
 
-    clickHandler = () => { 
-        this.setState(prevstate => ({unlocked: !prevstate.unlocked})); 
-    }
-    render(){  
-        let contClass = 'lock'; 
-        if(this.state.unlocked){ 
-            contClass = 'lock unlocked'; 
-        }
+    
         return( 
             <>
-                <div className="container" onClick={this.clickHandler}>
+                <div className={`container ${props.glow? 'glow' : ' '}`} onClick={props.clicked}>
                     <div className="padlockMain">
-                        <span className={contClass}></span>
+                        <span className={`lock ${props.submitted ? ' ' : 'unlocked'}`}></span>
                     </div>
                 </div>
             
             <style jsx> {`
-                                    /* :::::::::::::: Presentation css */
+  
     * {
      
       box-sizing: border-box;
@@ -39,7 +28,7 @@ class SubmitLock extends Component{
         padding-top: 18px; 
         align-content: center; 
         cursor: pointer; 
-    }
+    } 
     .padlockMain {
       display: flex;
       align-items: center;
@@ -116,11 +105,28 @@ class SubmitLock extends Component{
       left: 40%;
       bottom: 124%;
       transform: rotate(-30deg);
-    }
+    } 
+
+    .glow { 
+                    animation: glow 1.7s infinite; 
+                }
+            @keyframes glow{ 
+                    0% { 
+                        transform: scale(1); 
+                    } 
+
+                    50% { 
+                        transform: scale(1.2);
+                    }
+
+                    100% { 
+                        transform: scale(1); 
+                    } 
+
+                }
             `} </style>
         </>
         );
     }
-}
 
 export default SubmitLock; 
