@@ -3,11 +3,13 @@ const AlphabetOption = (props) => {
     classes.push(props.size); 
     if(props.glow){ 
         classes.push("glow"); 
-    }
+    } 
     return(
     <>
-        <div className={classes.join(' ')} onClick={props.clicked}>{props.children}</div>
-        <style jsx> {`
+            
+             <div className={classes.join(' ')} onClick={props.clicked}>{props.children}</div>
+       
+            <style jsx> {`
             .small{ 
                 background-color : ${props.color}; 
                 border-radius: 20px; 
@@ -17,7 +19,10 @@ const AlphabetOption = (props) => {
                 text-align: center; 
                 color: white; 
                 text-transform: uppercase; 
-                display: ${props.show? 'block' : 'none'};
+                //display: ${props.show ? 'block' : 'none'};
+                visibility: ${props.show ? 'visible' : 'hidden'}; 
+                opacity: ${props.show ? 1 : 0}; 
+                transition: visibility .4s, opacity .4s ease-in-out; 
                 cursor: pointer;  
             }  
 
@@ -29,8 +34,7 @@ const AlphabetOption = (props) => {
                 font-weight: 700;  
                 text-align: center; 
                 color: ${props.color}; 
-                text-transform: uppercase; 
-                justify-self: center; 
+                text-transform: uppercase;
                 cursor: pointer; 
             }
 
@@ -55,6 +59,8 @@ const AlphabetOption = (props) => {
             .big{ 
                 background-color : ${props.color}; 
             } 
+            
+            
             @media only screen and (max-width: 800px){ 
                 .small{ 
                     font-size: 5rem; 

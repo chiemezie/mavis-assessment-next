@@ -37,7 +37,17 @@ class Lesson1 extends Component {
             {sound: 'https://mavis-assessment.s3.eu-west-2.amazonaws.com/audio/alhel5.mp3', playing: false},
             {sound: 'https://mavis-assessment.s3.eu-west-2.amazonaws.com/audio/alhel6.mp3', playing: false}
            
-        ],
+        ], 
+        currentHelpSound: { 
+            playing: false,
+            sound: 'https://mavis-assessment.s3.eu-west-2.amazonaws.com/audio/alhel1.mp3'
+        }, 
+
+        currentBoardSound: { 
+            playing: false, 
+            sound: 'https://mavis-assessment.s3.eu-west-2.amazonaws.com/audio/tapa.mp3', 
+            bid: 0
+        },
         boardSounds: [
             {sound:'https://mavis-assessment.s3.eu-west-2.amazonaws.com/audio/tapa.mp3', playing: false}
         ],
@@ -109,7 +119,7 @@ class Lesson1 extends Component {
 
     
     teacherClickHandler = () => { 
-        
+     
         if (this.state.helpStage===1){ 
             this.playSound(0); 
         }
@@ -309,26 +319,31 @@ class Lesson1 extends Component {
     // SOUND METHODS ///////////////////////////////////
 
     playSound = (index) => {   
-        this.setState(prevState=> {
-            prevState.helpSounds.splice(index,1,updateObject(prevState.helpSounds[index], {playing:true}));
-            return({helpSounds: prevState.helpSounds});
-        }); 
+        
+        // this.setState(prevState=> {
+        //     prevState.helpSounds.splice(index,1,updateObject(prevState.helpSounds[index], {playing:true}));
+        //     return({helpSounds: prevState.helpSounds});
+        // });  
+
+        // for now what we just do is to set the right sound and then 
+        this.setState({currentHelpSound: {playing: true, sound: this.state.helpSounds[index].sound}});     
+
     }  
     
     playBoardSound = (index) => { 
-        this.setState(prevState=> {
-            prevState.boardSounds.splice(index,1,updateObject(prevState.boardSounds[index], {playing:true}));
-            return({boardSounds: prevState.boardSounds});
-        }); 
-       
+        // this.setState(prevState=> {
+        //     prevState.boardSounds.splice(index,1,updateObject(prevState.boardSounds[index], {playing:true}));
+        //     return({boardSounds: prevState.boardSounds});
+        // }); 
+       this.setState({currentBoardSound: {playing: true, sound: this.state.boardSounds[index].sound, bid: index}}); 
     }
 
     handleAudioEnd = () => {
-        // // set the playing to false 
-        // this.setState({playing: false});
-        // // reset the teacher 
-        // this.teacherReset(); 
-        // this.upgradeHelpStage(); 
+        // set the playing to false 
+       this.setState(prevState => ({currentHelpSound: updateObject(prevState.currentHelpSound, {playing: false})})); 
+        // reset the teacher 
+        this.teacherReset(); 
+        this.upgradeHelpStage(); 
     }   
     handleHelpAudioEnd = (index) => { 
        // get the state that has the particular index and set it to false 
@@ -341,30 +356,32 @@ class Lesson1 extends Component {
        this.upgradeHelpStage(); 
     }
     
-    handleBoardAudioEnd = (index) =>  { 
+    handleBoardAudioEnd = () =>  { 
         // set the playing audio to false 
-        this.setState(prevState=> {
-            prevState.boardSounds.splice(index,1,updateObject(prevState.boardSounds[index], {playing:false}));
-            return({boardSounds: prevState.boardSounds});
-        }); 
-        // reset the teacher 
-        this.boardTeacherReset(index); 
+        // this.setState(prevState=> {
+        //     prevState.boardSounds.splice(index,1,updateObject(prevState.boardSounds[index], {playing:false}));
+        //     return({boardSounds: prevState.boardSounds});
+        // }); 
+        // set the playing audio to false 
+         this.setState(prevState => ({currentBoardSound: updateObject(prevState.currentBoardSound, {playing: false})}));  
+         // reset the teacher 
+         this.boardTeacherReset(this.state.currentBoardSound.bid); 
         // upgrade the stage 
         this.upgradeHelpStage(); 
+          
     } 
 
     
     handleAudioPlay = () => { 
-        // // check if we're in stage 1 
-        // if(this.state.helpStage===1){ 
-        //     // display the question 
-        //     this.setBoardContent("Tap on the correct answer"); 
-        // }
+        this.teacherTalk(); 
+        if(this.state.helpStage===1){ 
+            this.setBoardContent("Tap on the correct answer"); 
+        }
     }   
 
-    handleBoardAudioPlay = (index) => { 
+    handleBoardAudioPlay = () => { 
         // get the teacher to talk 
-        this.boardTeacherTalk(index); 
+        this.boardTeacherTalk(this.state.currentBoardSound.bid); 
     }
 
     handleHelpAudioPlay = () => { 
@@ -494,27 +511,29 @@ handleWrongEnd = () => {
     
  
     render(){  
-         const helpHowls = this.state.helpSounds.map((hs,index) => (
-         <ReactHowler 
-         key = {index} src={hs.sound} 
-         playing={hs.playing} 
-         onEnd={()=>this.handleHelpAudioEnd(index)} 
-         onPlay={this.handleHelpAudioPlay} />));  
+        //  const helpHowls = this.state.helpSounds.map((hs,index) => (
+        //  <ReactHowler 
+        //  key = {index} src={hs.sound} 
+        //  playing={hs.playing} 
+        //  onEnd={()=>this.handleHelpAudioEnd(index)} 
+        //  onPlay={this.handleHelpAudioPlay} />));  
 
-         const boardSounds = this.state.boardSounds.map((bs,index) => (
-             <ReactHowler 
-                 key = {index} 
-                 src= {bs.sound} 
-                 playing = {bs.playing}
-                 onEnd ={()=>this.handleBoardAudioEnd(index)}
-                 onPlay={()=>this.handleBoardAudioPlay(index)}
-             /> 
-         ));
+        //  const boardSounds = this.state.boardSounds.map((bs,index) => (
+        //      <ReactHowler 
+        //          key = {index} 
+        //          src= {bs.sound} 
+        //          playing = {bs.playing}
+        //          onEnd ={()=>this.handleBoardAudioEnd(index)}
+        //          onPlay={()=>this.handleBoardAudioPlay(index)}
+        //      /> 
+        //  ));
        
         return (
             <div className="container">
-                {helpHowls}
-                {boardSounds}
+                {/* {helpHowls} */}
+                <ReactHowler src={this.state.currentHelpSound.sound} playing={this.state.currentHelpSound.playing} onEnd={this.handleAudioEnd} onPlay={this.handleAudioPlay} />
+                {/* {boardSounds} */}
+                <ReactHowler src={this.state.currentBoardSound.sound} playing={this.state.currentBoardSound.playing} onEnd={this.handleBoardAudioEnd} onPlay={this.handleBoardAudioPlay} /> 
                 <ReactHowler src=" https://mavis-assessment.s3.eu-west-2.amazonaws.com/audio/correct.mp3" playing = {this.state.correctPlaying} onEnd = {this.handleCorrectEnd} />
                 <ReactHowler src=" https://mavis-assessment.s3.eu-west-2.amazonaws.com/audio/wta.mp3" playing = {this.state.wrongPlaying} onEnd = {this.handleWrongEnd} />
                 <Head>
