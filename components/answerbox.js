@@ -1,5 +1,4 @@
 import AlphabetOption from './alphabetOption'; 
-import {TransitionGroup, Transition} from 'react-transition-group'; 
 const AnswerBox = (props) => {
      let options  = null; 
      if(props.options){ 

@@ -3,12 +3,142 @@ import ScoreBoard from './scoreboard';
 import SubmitLock from './submitlock'; 
 import AlphabetOption from './alphabetOption'; 
 import {TransitionGroup, Transition } from 'react-transition-group'; 
+import Balloon from './balloon'; 
 
 
 
 const Board = (props) => {
     //form the options that will be displayed below the question 
     let options = null; 
+    const gameOver = (
+    <>
+    <div className="gob">
+    <div className="gotContainer"> Game Over !! </div>
+    <div className="balloonLeftContainer"><Balloon color={['hsl(215,50%,65%)', 'hsl(215,30%,50%)']}/></div>
+    <div className="balloonRightContainer"><Balloon color={['hsl(59,50%,58%)', 'hsl(59,30%,52%)']}/></div>
+    <div className="correctWordContainer">Correct : </div>
+    <div className="wrongWordContainer">Wrong : </div>
+    <div className="correctScoreContainer">{props.score.correct}</div>
+    <div className="wrongScoreContainer">{props.score.wrong}</div>
+    </div>
+    <style jsx> {` 
+        .gob{ 
+            display: grid; 
+            grid-template-rows: 1fr .7fr .7fr; 
+            grid-template-columns: .8fr 1fr 1fr .8fr; 
+            font-size: 50px; 
+            font-weight: bold; 
+            font-family: 'Kalam', cursive;  
+        }
+        .gotContainer { 
+            grid-row: 1/2; 
+            grid-column: 2/4; 
+            display: grid; 
+            justify-content: center; 
+            align-content: center; 
+            color: #218E8A;  
+        } 
+        .balloonLeftContainer{ 
+            grid-row: 1/-1; 
+            grid-column: 1/2; 
+           
+        } 
+        .balloonRightContainer{ 
+            grid-row: 1/-1; 
+            grid-column: 4/-1; 
+           
+        } 
+        .correctWordContainer{ 
+            grid-row: 2/3; 
+            grid-column: 2/3; 
+            display: grid; 
+            justify-content: center; 
+            align-content: center; 
+            color: green;
+            
+        }
+        .wrongWordContainer{ 
+            grid-row: 2/3; 
+            grid-column: 3/4; 
+            display: grid; 
+            justify-content: center; 
+            align-content: center; 
+            color: red;
+        }
+        .correctScoreContainer{ 
+            grid-row: 3/4; 
+            grid-column: 2/3; 
+            background-color: green; 
+            margin-right: 5px;
+            display: grid; 
+            justify-content: center; 
+            align-content: center; 
+            color: white; 
+            transition: all .9s; 
+            transform : scale(${props.correctPop? 1.2 : 1}); 
+            z-index: ${props.correctPop ? 10 : 1} ; 
+        } 
+        .wrongScoreContainer{ 
+            grid-row: 3/4; 
+            grid-column: 3/4; 
+            background-color: red; 
+            margin-left: 5px; 
+            display: grid; 
+            justify-content: center; 
+            align-content: center; 
+            color: white; 
+            transition: all .9s; 
+            transform : scale(${props.wrongPop? 1.2 : 1});
+            z-index: ${props.wrongPop? 10 : 1}
+        } 
+
+        @media only screen and (max-width:1200px){ 
+            .gob{ 
+                font-size: 40px; 
+            }
+        }
+
+      
+
+        @media only screen and (max-width: 950px){
+        .gob{ 
+            grid-template-rows: 1fr .5fr .5fr; 
+            grid-template-columns: .3fr .5fr .5fr .3fr; 
+        } 
+
+        .balloonLeftContainer{ 
+            grid-row: 1/2;  
+        } 
+        .balloonRightContainer{ 
+            grid-row: 1/2;  
+        } 
+        .correctWordContainer{  
+            grid-column: 1/3; 
+        }
+        .wrongWordContainer{ 
+          
+            grid-column: 3/-1; 
+         
+        } 
+        .correctScoreContainer{ 
+           
+            grid-column: 1/3; 
+          
+        } 
+        .wrongScoreContainer{ 
+            
+            grid-column: 3/-1;  
+        } 
+    } 
+
+    @media only screen and (max-width: 450px){ 
+        .gob{ 
+            font-size: 30px;
+        }
+    }
+
+    `} </style>
+    </>); 
     if (props.selected && props.selected.type === "alphabet") {
         options = props.selected.options.map((sel, index) => ( 
             <Transition key={index}
@@ -88,6 +218,9 @@ const Board = (props) => {
     else if(props.mode ==='wrong'){ 
         boardColor = 'red';
     } 
+    else if(props.mode === 'gameover'){ 
+        boardColor = 'snow';
+    }
     else { 
         boardColor = '#218E8A'; 
     }
@@ -96,15 +229,16 @@ const Board = (props) => {
     return( 
     <>
         <div className="board">
+            {props.stageNum===5 ? gameOver : null}
             <div className="scoreBoardContainer">
-                <ScoreBoard /> 
+                {props.score.show? <ScoreBoard score={props.score}/> : null}
             </div> 
             <div className="mainBoardContainer">
                     <TransitionGroup component={null}>
                         {props.content ? props.content.map((cont, index) => (
                             <Transition
                                 key={index}
-                                timeout={400} >
+                                timeout={600} >
                                 {
                                     state => (
                                         <li className={state==='entering' ? 'fadeIn' : state === 'exiting' ? "fadeOut" : null}>
@@ -121,12 +255,12 @@ const Board = (props) => {
                 <TransitionGroup component={null}>
                     {options}
                 </TransitionGroup>
-                <div className="submitContianer" >
-                    <SubmitLock glow= {props.submitGlow} clicked={props.handleSubmitClicked} submitted = {props.submitted}/>
-                </div>
                 
+            <div className="submitContianer" >
+                    {props.submit.show? <SubmitLock glow= {props.submit.glow} clicked={props.handleSubmitClicked} submitted = {props.submit.submitted} /> : null}
+            </div> 
             </div>
-           
+            
            
             
         </div> 
@@ -139,13 +273,15 @@ const Board = (props) => {
                 border-width: 1.4rem; 
                 border-style: ridge; 
                 border-width: 1.4rem; 
-                display: grid;  
-                grid-template-rows: 1rem 1fr; 
-                padding: 2rem; 
+                display: grid;   
+                grid-template-rows: ${props.stageNum===5 ? '1fr' : '1rem 1fr 1rem'}; 
+                grid-template-columns: ${props.stageNum===5 ? '1fr' : 'auto'}; 
+                padding: ${props.stageNum=== 5? '5% 0' : '2rem'}; 
+                transition: background-color .6s ;
             } 
 
             .fadeIn{ 
-                animation: fadeIn .4s  ;   
+                animation: fadeIn .6s  ;   
             } 
 
             @keyframes fadeIn{ 
@@ -158,7 +294,7 @@ const Board = (props) => {
             } 
 
             .fadeOut{ 
-                animation: fadeOut .4s  ;   
+                animation: fadeOut .6s  ;   
             } 
 
             @keyframes fadeOut{ 
@@ -189,8 +325,12 @@ const Board = (props) => {
             .submitContianer{ 
                 justify-self: center; 
             }
+            @media only screen and (max-width: 900px){ 
+               
+            } 
+
             @media only screen and (max-width: 700px){ 
-                
+                grid-template-columns: ${props.stageNum===5 ? '.8fr 1.2fr 1.2fr .8fr' : 'auto'}; 
             }
 
             @media only screen and (max-width: 600px){ 

@@ -1,4 +1,4 @@
-const Welcome = () => ( 
+const Welcome = (props) => ( 
     <>
         <div className="welcome">
             <div className="welcome__border"></div>
@@ -8,7 +8,7 @@ const Welcome = () => (
                     <div className="badge-ribbon1"></div>
                     <div className="badge-ribbon2"></div>
                 </div>
-                <h1>WELCOME TO CLASS</h1>
+                <h1>{props.header}</h1>
                 <div className="leftRibbons">
                     <div className="badge-ribbon2"></div>
                     <div className="badge-ribbon3"></div>

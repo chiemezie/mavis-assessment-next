@@ -1,8 +1,8 @@
-const ScoreBoard = () => (
+const ScoreBoard = (props) => (
     <>
         <div className="scoreContainer"> 
-            <div className="correct">3</div>
-            <div className="wrong">4</div>
+            <div className="correct">{props.score.correct}</div>
+            <div className="wrong">{props.score.wrong}</div>
         </div> 
         <style jsx> {`
             .scoreContainer { 
@@ -23,12 +23,14 @@ const ScoreBoard = () => (
                 padding: .4rem 1.2rem; 
                 color: white; 
                 border-radius: 50%; 
+                text-align: center; 
             } 
             .wrong{ 
                 background-color:  orangered; 
                 padding: .4rem 1.2rem; 
                 color: white; 
                 border-radius: 50%; 
+                text-align: center; 
             } 
             @media only screen and (max-width: 700px){ 
                 .scoreContainer{ 
