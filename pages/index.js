@@ -217,7 +217,17 @@ const alphabetOptionsReducer = (state,action) => {
         default: 
         throw new Error('Should not get here');
     }
-};
+}; 
+
+const initialBoardContentState = 
+const boardContentReducer = (state,action) => { 
+    switch(action.type){ 
+        case SET: 
+        case ADD: 
+        default: 
+        throw new Error('Should not get here'); 
+    }
+}
 
 
 const Lesson1 = props => { 
@@ -311,7 +321,9 @@ const [currentBoardSoundState, dispatchCurrentBoardSound] = useReducer(currentBo
 const [boardSounds, setBoardSounds] = useState([
     {sound:'https://mavis-assessment.s3.eu-west-2.amazonaws.com/audio/tapa.mp3', playing: false}
 ]); 
-const [gameSounds, setGameSounds] = useState( ); 
+const [gameSounds, setGameSounds] = useState([
+    {sound: 'https://mavis-assessment.s3.eu-west-2.amazonaws.com/audio/gameinit.mp3', playing: false, type: 'init'},
+] ); 
 const [currentGameSoundState, dispatchCurrentGameSound] = useReducer(currentGameSoundReducer,initialCurrentGameSoundState); 
 const [boardContent, setboardContent] = useState(false) ; 
 const [alphabetOptions, setAlphabetOptions] = useState([
@@ -420,7 +432,7 @@ const  executeGameStage = useCallback((stageNum) => {
             // make sure that the countdown isn't set to ended anymore and is rest 
             dispatchCountdown({type: 'RESET'});  
             // play the game init sound 
-            this.playGameSound(2); 
+            playGameSound(0); 
             // reset the board 
             this.boardReset(); 
 
@@ -879,8 +891,7 @@ const  executeGameStage = useCallback((stageNum) => {
 //     } 
 
  const  playGameSound = (index) => { 
-        dispatchCurrentGameSound({type: 'PLAY', sound: })
-        this.setState({currentGameSound: {playing: true, sound: this.state.gameSounds[index].sound, type: this.state.gameSounds[index].type}}); 
+        dispatchCurrentGameSound({type: 'PLAY', sound: gameSounds[index].sound, stype: gameSounds[index].type}); 
     }  
 
     // playCorrectScoreSound = (score) => { 
@@ -1007,27 +1018,27 @@ const  executeGameStage = useCallback((stageNum) => {
 //      } 
 //   }
 
-//   boardReset = () => { 
+const  boardReset = () => { 
         
-//         this.boardQuestionPrep(); 
-//          // set the scoreboard to zero zero 
-//          this.scoreReset(); 
-//   }  
+        this.boardQuestionPrep(); 
+         // set the scoreboard to zero zero 
+         this.scoreReset(); 
+  }  
 
-//   boardQuestionPrep = () => { 
-//      // clear the board 
-//      this.setBoardContent(null,null);  
+  const boardQuestionPrep = () => { 
+     // clear the board 
+     this.setBoardContent(null,null);  
 
-//      // clear the option that was on the board 
-//      this.setState({selected: null}); 
+     // clear the option that was on the board 
+     this.setState({selected: null}); 
 
-//      // clear the options box 
-//      this.setState({alphabetOptions: null}); 
+     // clear the options box 
+     this.setState({alphabetOptions: null}); 
      
-//      // set the board to the normal color  
-//      this.setState(prevState => ({board: updateObject(prevState.board, {mode: 'default'})}));   
+     // set the board to the normal color  
+     this.setState(prevState => ({board: updateObject(prevState.board, {mode: 'default'})}));   
 
-//   }
+  }
 
 //   scoreReset = () => { 
 //       this.setState({score: {correct: 0, wrong: 0}}); 
@@ -1065,7 +1076,6 @@ const  executeGameStage = useCallback((stageNum) => {
 //     if(this.state.mode==='help'){ 
 //         if(this.state.currentGameSound.type==='correct'){ 
 //             this.setHelpStage(11); 
-
 //         } 
 //         else if(this.state.currentGameSound.type==='wrong'){ 
 //             // set the stage to stage 9
