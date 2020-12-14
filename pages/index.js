@@ -1,4 +1,5 @@
-import {Component, useReducer, useState, useEffect} from 'react'; 
+
+import { Component, useReducer, useState, useEffect, useCallback } from "react"; 
 import Head from 'next/head'; 
 import Teacher from '../components/teacher'; 
 import Welcome from '../components/welcome'; 
@@ -14,17 +15,45 @@ import AnswerBox from '../components/answerbox';
 import ReactHowler from 'react-howler'; 
 import {updateObject } from '../shared/utility';  
 
+const helpStageReducer = (state,action) => { 
+    switch(action.type){ 
+        case 'ADD': 
+        const nstate = Math.floor(state); 
+        return nstate++ ; 
+        case 'SET': 
+        return action.num ; 
+        case 'RESET':
+        return 0;  
+        default: 
+        throw new Error('Should not get here'); 
+    }
+} 
+
+const gamepStageReducer = (state,action) => { 
+    switch(action.type){ 
+        case 'ADD': 
+        const nstate = Math.floor(state); 
+        return nstate++ ; 
+        case 'SET': 
+        return action.num ; 
+        case 'RESET':
+        return 0;  
+        default: 
+        throw new Error('Should not get here'); 
+    }
+}
+
 const initialCountdownState = {continue:false, ended: false, reset:false}
 const countdownReducer = (countdownState, action) => { 
     switch(action.type){ 
         case 'CONTINUE': 
-        return{...countdownState, continue: true}
+        return{...countdownState, continue: true};
         case 'PAUSE': 
-        return{...countdownState, continue: false}
+        return{...countdownState, continue: false};
         case 'END': 
-        return{...countdownState, ended: true}
+        return{...countdownState, ended: true};
         case 'RESET': 
-        return initialCountdownState
+        return initialCountdownState;
         default: 
         throw new Error('Should not get here!'); 
     }
@@ -34,31 +63,31 @@ const initialScoreState = {correct: 0, wrong: 0, show: true}
 const scoreReducer = (scoreState, action) => { 
     switch(action.type){ 
         case 'ADD_CORRECT': 
-        return{...scoreState, correct: scoreState.correct + action.inc}
+        return{...scoreState, correct: scoreState.correct + action.inc};
         case 'ADD_WRONG': 
-        return{...scoreState, wrong: scoreState.wrong + action.inc}
+        return{...scoreState, wrong: scoreState.wrong + action.inc};
         case 'RESET_SCORE': 
-        return{...scroeState, correct: 0, wrong: 0}
+        return{...scroeState, correct: 0, wrong: 0};
         case 'SHOW': 
-        return{...scroreState, show: true}
+        return{...scroreState, show: true};
         case 'HIDE': 
-        return{...scroreState, show: false}
+        return{...scroreState, show: false};
         case 'INIT':
-        return initialScoreState 
+        return initialScoreState;
         default: 
         throw new Error('Should not get here!'); 
     }
 } 
 
-const initialTeacherState = {glow: false, talk: false} 
+const initialTeacherState = {glow: false, talk: false} ;
 const teacherReducer = (state,action)=> { 
     switch(action.type){ 
         case 'TALK': 
-        return {talk: true, glow: false}
+        return {talk: true, glow: false};
         case 'GLOW': 
-        return {glow: true, talk: false}
+        return {glow: true, talk: false};
         case 'RESET': 
-        return initialTeacherState
+        return initialTeacherState;
         default: 
         throw new Error('Should not get here!');
     }
@@ -68,11 +97,11 @@ const initialBoardTeacherState = [{glow: false, talk: false}];
 const boardTeacherReducer = (state,action) => { 
     switch(action.type){ 
         case 'TALK': 
-        return updateArray(state,action.ind,{talk: true, glow: false})
+        return updateArray(state,action.ind,{talk: true, glow: false});
         case 'GLOW': 
-        return updateArray(state,action.ind,{talk: false, glow: true})
+        return updateArray(state,action.ind,{talk: false, glow: true});
         case 'RESET': 
-        return updateArray(state,action.ind,{talk: false, glow: false})
+        return updateArray(state,action.ind,{talk: false, glow: false});
         default: 
         throw new Error('Should not get here!');
     }
@@ -82,7 +111,7 @@ const updateArray = (arr, ind, obj) => {
     // do a deep clone of the array 
     let newArr = [...arr]; 
     // do a splice of the new array to remove the object that was there and put the new one 
-    newArr.splice(ind,1,obj); 
+    newArr.splice(ind,1,updateObject(newArr[ind],obj)); 
     return newArr; 
 } 
 
@@ -91,17 +120,17 @@ const initialCurrentTeacherSoundState = {playing: false,  sound: 'https://mavis-
 const currentTeacherSoundReducer = (state,action) => { 
     switch(action.type){ 
         case 'PLAY': 
-        return {...state, playing: true} 
+        return {playing: true, sound: action.sound}; 
         case 'STOP': 
-        return {...state, playing: false} 
+        return {...state, playing: false} ;
         case 'SET_SOUND': 
-        return {playing: false, sound: action.sound}
+        return {playing: false, sound: action.sound};
         default: 
-        throw new Error('Should not get here')
+        throw new Error('Should not get here');
     }
 } 
 
-const initialCurrentBoardSoundState = {playing: false, sound: 'https://mavis-assessment.s3.eu-west-2.amazonaws.com/audio/tapa.mp3', bid: 0}
+const initialCurrentBoardSoundState = {playing: false, sound: 'https://mavis-assessment.s3.eu-west-2.amazonaws.com/audio/tapa.mp3', bid: 0};
 const currentBoardSoundReducer = (state, action) => { 
     switch(action.type){ 
         case 'PLAY': 
@@ -109,67 +138,86 @@ const currentBoardSoundReducer = (state, action) => {
         case 'STOP': 
         return {...state, playing: false} 
         case 'SET_SOUND': 
-        return {playing: false, sound: action.sound}
+        return {playing: false, sound: action.sound};
         case 'SET_BID' : 
-        return {...state, bid: action.bid}
+        return {...state, bid: action.bid};
         default: 
-        throw new Error('Should not get here')
+        throw new Error('Should not get here');
     }
 } 
 
-const initialCurrentGameSoundState = {playing: false,  sound: 'https://mavis-assessment.s3.eu-west-2.amazonaws.com/audio/correct.mp3', type: 'correct'}
+const initialCurrentGameSoundState = {playing: false,  sound: 'https://mavis-assessment.s3.eu-west-2.amazonaws.com/audio/correct.mp3', type: 'correct'};
 const currentGameSoundReducer = (state,action) => { 
     switch(action.type){ 
         case 'PLAY': 
-        return {...state, playing: true} 
+        return {playing: true, sound: action.sound, type: action.stype} ;
         case 'STOP': 
-        return {...state, playing: false} 
+        return {...state, playing: false} ;
         case 'SET_SOUND': 
-        return {playing: false, sound: action.sound}
+        return {playing: false, sound: action.sound};
         case 'SET_TYPE': 
-        return {...state, type: action.stype}
+        return {...state, type: action.stype};
         default: 
-        throw new Error('Should not get here') 
+        throw new Error('Should not get here') ;
     }
 } 
 
-const initialSelectedState = {type: null, options: []} 
+const initialSelectedState = {type: null, options: []} ;
 const selectedReducer = (state, action) => { 
     switch(action.type){ 
         case 'SET_TYPE': 
-        return {...state, type: action.stype} 
+        return {...state, type: action.stype} ;
         case 'SET_OPTIONS': 
-        return {...state, options: action.options}
+        return {...state, options: action.options}; 
+        case 'REMOVE_OPTION': 
+        return{...state, options: state.options.filter(opt => opt.id !== action.id)}; 
         default: 
-        throw new Error('Should not get here') 
+        throw new Error('Should not get here') ;
     }
 } 
 
-const initialSubmitState = {glow: false, canSubmit: false, submitted: false, show: true}; 
+const initialSubmitState = {glow: false, canSubmit: false, submitted: false, show: false}; 
 const submitReducer = (state,action) => { 
     switch(action.type){ 
         case 'GLOW': 
-        return {...state, glow: true}
+        return {...state, glow: true};
         case 'STOP_GLOW': 
-        return {...state, glow: false}
+        return {...state, glow: false};
         case 'ENABLE_SUBMIT': 
-        return {...state, canSubmit: true}
+        return {...state, canSubmit: true, show: true};
         case 'DISABLE_SUBMIT': 
-        return {...state, canSubmit: false}
+        return {...state, canSubmit: false};
         case 'SET_SUBMITTED': 
-        return {...state, submitted: true}
+        return {...state, submitted: true};
         case 'DISABLE_SUBMITTED': 
-        return {...state, submitted: false}
+        return {...state, submitted: false};
         case 'HIDE': 
-        return {...state, show: false}
+        return {...state, show: false};
         case 'SHOW': 
-        return {...state, show: true} 
+        return {...state, show: true} ;
         case 'RESET': 
-        return initialSubmitState
+        return initialSubmitState;
         default: 
         throw new Error('Should not get here')
     }
-}
+} 
+
+const initialAlphabetOptionsState = [
+    {sound: 'https://mavis-assessment.s3.eu-west-2.amazonaws.com/audio/correct.mp3', type: 'correct'},
+    {sound: 'https://mavis-assessment.s3.eu-west-2.amazonaws.com/audio/wta.mp3', type: 'wrong'},
+    {sound: 'https://mavis-assessment.s3.eu-west-2.amazonaws.com/audio/gameinit.mp3', type: 'init'}, 
+    {sound: 'https://mavis-assessment.s3.eu-west-2.amazonaws.com/audio/wrongs.mp3', type: 'wrong'}, 
+    {sound: 'https://mavis-assessment.s3.eu-west-2.amazonaws.com/audio/bellRing.mp3', type: 'gameEnd'}
+] 
+
+const alphabetOptionsReducer = (state,action) => { 
+    switch(action.type){ 
+        case 'SHOW': 
+        return updateArray(state,action.ind, {show:true}); 
+        default: 
+        throw new Error('Should not get here');
+    }
+};
 
 
 const Lesson1 = props => { 
@@ -177,13 +225,14 @@ const Lesson1 = props => {
     
     const [timerMode, setTimerMode] = useState('default'); 
     const [countdownState, dispatchCountdown] = useReducer(countdownReducer,initialCountdownState);
-    const [helpStage, setHelpStage] = useState(0); 
-    const [gameStage, setGameStage] = useState(0);  
+    const [helpStage, dispatchHelpStage] = useReducer(helpStageReducer, 0); 
+    const [gameStage, dispatchGameStage] = useReducer(gamepStageReducer, 0); 
     const [scoreState, dispatchScore] = useReducer(scoreReducer, initialScoreState); 
     const [teacherState, dispatchTeacher] = useReducer(teacherReducer, initialTeacherState); 
     const [boardTeacherState, dispatchBoardTeacher] = useReducer(boardTeacherReducer, initialBoardTeacherState); 
     const [boardMode, setBoardMode] = useState('default'); 
     const [optionsGlow, setOptionsGlow] = useState(false); 
+    const [boardOptionsGlow, setBoardOptionsGlow] = useState(false); 
     const [correctPop, setCorrectPop] = useState(false); 
     const [wrongPop, setWrongPop] = useState(false); 
     const [helpSounds, setHelpSounds] = useState([
@@ -262,13 +311,7 @@ const [currentBoardSoundState, dispatchCurrentBoardSound] = useReducer(currentBo
 const [boardSounds, setBoardSounds] = useState([
     {sound:'https://mavis-assessment.s3.eu-west-2.amazonaws.com/audio/tapa.mp3', playing: false}
 ]); 
-const [gameSounds, setGameSounds] = useState( [
-    {sound: 'https://mavis-assessment.s3.eu-west-2.amazonaws.com/audio/correct.mp3', type: 'correct'},
-    {sound: 'https://mavis-assessment.s3.eu-west-2.amazonaws.com/audio/wta.mp3', type: 'wrong'},
-    {sound: 'https://mavis-assessment.s3.eu-west-2.amazonaws.com/audio/gameinit.mp3', type: 'init'}, 
-    {sound: 'https://mavis-assessment.s3.eu-west-2.amazonaws.com/audio/wrongs.mp3', type: 'wrong'}, 
-    {sound: 'https://mavis-assessment.s3.eu-west-2.amazonaws.com/audio/bellRing.mp3', type: 'gameEnd'}
-]); 
+const [gameSounds, setGameSounds] = useState( ); 
 const [currentGameSoundState, dispatchCurrentGameSound] = useReducer(currentGameSoundReducer,initialCurrentGameSoundState); 
 const [boardContent, setboardContent] = useState(false) ; 
 const [alphabetOptions, setAlphabetOptions] = useState([
@@ -282,46 +325,25 @@ const [submitState, dispatchSubmit] = useReducer(submitReducer, initialSubmitSta
 const [correctPlaying, setCorrectPlaying] = useState(false); 
 const [wrongPlaying, setWrongPlaying] = useState(false); 
 const [currentAnsIndex, setCurrentAnsIndex] = useState(1); 
-const [selectedAnsIndex, setSelectedAnsIndex] = useState(0);
+const [selectedAnsIndex, setSelectedAnsIndex] = useState(0); 
+const [alphabetOptionsState, dispatchAlphabetOptions] = useReducer(alphabetOptionsReducer,initialAlphabetOptionsState); 
 
 // this use effect is to execute the helpStage 
 useEffect(() => { 
 // check what mode and execute accordingly 
-mode === 'help' ? executeHelpStage(helpStage) : mode=== 'game' ? executeGameStage(gameStage) : null;
+mode === 'help' ? executeHelpStage(helpStage) : executeGameStage(gameStage)  ;
   
-});  
+},[mode,helpStage,gameStage]);  
 
 //  // HELP STAGE METHODS ////////////////////////////////////
+const    upgradeHelpStage = () => { 
+       dispatchHelpStage({type: 'ADD'});
+    } 
+ const   upgradeGameStage = () => { 
+     dispatchGameStage({type: 'ADD'}); 
+    }
 
-
-//     setHelpStage = (stageNum) => { 
-//         this.setState({helpStage: stageNum}); 
-//         this.executeHelpStage(stageNum); 
-//     }   
-
-//     setGameStage = (stageNum) => { 
-//         this.setState({gameStage: stageNum}); 
-//         this.executeGameStage(stageNum); 
-//     }
-    
-//     upgradeHelpStage = () => { 
-//         // get the help stage 
-//         let helpStage = this.state.helpStage; 
-//         // round it down 
-//         helpStage = Math.floor(helpStage); 
-//         // add 1 to it 
-//         helpStage++; 
-//         // set the help stage to this 
-//         this.setHelpStage(helpStage); 
-//     } 
-//     upgradeGameStage = () => { 
-//         let gameStage = this.state.gameStage; 
-//         gameStage = Math.floor(gameStage); 
-//         gameStage++; 
-//         this.setGameStage(gameStage); 
-//     }
-
-const executeHelpStage = (stageNum) => { 
+const executeHelpStage = useCallback((stageNum) => { 
     // sort out the different stages 
     if(stageNum===1){ 
         // sort out the teacher 
@@ -333,77 +355,70 @@ const executeHelpStage = (stageNum) => {
     } 
     else if(stageNum===3){ 
         // set the board options to glow 
-        this.boardOptionsGlow(); 
+        setBoardOptionsGlow(true); 
     } 
     else if (stageNum===4){ 
-        this.boardOptionsReset(); 
-        this.boardTeacherGlow(0); 
+        setBoardOptionsGlow(false); 
+        dispatchBoardTeacher({type: 'GLOW', ind: 0}); 
     } 
     else if (stageNum ===5){  
         // this time the work for this stage is to say something 
-        this.playSound(3); 
+        playSound(3); 
     } 
     else if (stageNum===6){ 
-        this.optionsGlow(); 
+        setOptionsGlow(true); 
     } 
     else if(stageNum===7){ 
         // this time the work is to say something again     
-        this.playSound(4); 
+        playSound(4); 
     } 
     else if(stageNum===8){ 
         // make the submit button glow 
-        this.submitGlow();  
+       dispatchSubmit({type: 'GLOW'});;  
         // make the submit button submittable 
-        this.enableSubmit(); 
+       dispatchSubmit({type: 'ENABLE_SUBMIT'}); 
     } 
     else if (stageNum===9) { 
         //we are at the repeat stage to try to get it correct again 
         // remove all the options from the board 
-        this.removeOptions(); 
+        removeOptions(); 
         // let the options glow again 
-        this.optionsGlow(); 
-
+        setOptionsGlow(true); 
         // reset the submit button 
-        this.submitReset(); 
+        dispatchSubmit({type: 'RESET'});
     } 
     else if (stageNum===10) { 
         // we've just finished saying that the user can select the button on the board to remove or submit  
         // let the board option glow 
-        this.boardOptionsGlow(); 
+        setBoardOptionsGlow(true); 
         // let the submit glow 
-        this.submitGlow(); 
+       dispatchSubmit({type: 'GLOW'});; 
         // enable the submit 
-        this.enableSubmit(); 
+       dispatchSubmit({type: 'ENABLE_SUBMIT'}); 
         
     } 
     else if(stageNum ===11) { 
         // at this stage we've gotten everything correct and we want to start the game proper 
         // say that it's time to start the game 
-        this.playSound(6);  
+        playSound(6);  
     }  
     else if (stageNum === null) { 
-        // initialize the game stage 
-        this.setGameStage(0); 
+        dispatchGameStage({type:'SET', num: 0}); 
+        setMode('game'); 
     }
-        // the help stages have finished execute the first game stage 
-      
-    
-} 
+        // the help stages have finished execute the first game stage     
+},[])
 
 
-    getRandomInt = (max) => { 
+const    getRandomInt = (max) => { 
         return Math.floor(Math.random() * Math.floor(max));
-    } 
+ } 
 
-    executeGameStage = (stageNum) => { 
+const  executeGameStage = useCallback((stageNum) => { 
         if(stageNum===0){ 
             // this is the initialization phase 
-            // make sure that the countdown isn't set to ended anymore 
-            this.setState(prevState => ({countdown: updateObject(prevState.countdown, {ended: false})}));
-             // pause the time until the user hears the next question 
-             this.setState(prevState => ({countdown: updateObject(prevState.countdown, {continue: false})})); 
-            // set the mode to game  -- this handles the change of the background color 
-            this.setState({mode: 'game'}); 
+            // make sure that the countdown isn't set to ended anymore and is rest 
+            dispatchCountdown({type: 'RESET'});  
             // play the game init sound 
             this.playGameSound(2); 
             // reset the board 
@@ -418,8 +433,7 @@ const executeHelpStage = (stageNum) => {
             this.disableSubmit();  
 
             //reset the submit 
-            this.submitReset();   
-
+            dispatchSubmit({type: 'RESET'});
         
 
         
@@ -440,7 +454,7 @@ const executeHelpStage = (stageNum) => {
            // set the current question to be the question from the selection from the state 
            this.setState({currentQuestion: this.state.questions[qnum] }); 
            // ask the question 
-           this.playSound(this.state.currentQuestion.sound);  
+           playSound(this.state.currentQuestion.sound);  
            // set the answers at the bottom for the question 
            this.formOptions(4); 
 
@@ -449,7 +463,7 @@ const executeHelpStage = (stageNum) => {
           
             // this is the stage where the learner can select an option
             // let the options glow 
-            this.optionsGlow(); 
+            setOptionsGlow(true); 
             // let the board teacher glow 
             this.boardTeacherGlow(0); 
         
@@ -459,11 +473,11 @@ const executeHelpStage = (stageNum) => {
         else if(stageNum ===3){ 
             // here an option has been selected 
             // let the option glow 
-            this.boardOptionsGlow(); 
+            setBoardOptionsGlow(true);
             // let the submit button be enabled 
-            this.enableSubmit(); 
+           dispatchSubmit({type: 'ENABLE_SUBMIT'}); 
             // let the submit button glow as well 
-            this.submitGlow(); 
+           dispatchSubmit({type: 'GLOW'});; 
         } 
         else if (stageNum===4){ 
               // set the refresh back to false so that it can continue counting down
@@ -475,7 +489,7 @@ const executeHelpStage = (stageNum) => {
              this.disableSubmit(); 
 
              //reset the submit 
-             this.submitReset ();  
+             dispatchSubmit({type: 'RESET'});
 
              // ask a question again  
              this.setGameStage(1); 
@@ -492,21 +506,19 @@ const executeHelpStage = (stageNum) => {
             // hide the scoreboard 
             this.hideScoreBoard();  
             // hide the submit button  
-            this.submitReset();  
-
+            dispatchSubmit({type: 'RESET'});
             // set the board color to white 
             this.setState(prevState => ({ board: updateObject(prevState.board, { mode: 'gameover' }) }));
        
             // put the referesh button to start a new game (at the top where the welcome to class is supposed to be) -- figure that one out. 
 
         }
-    }
+    },[])
 // END HELP STAGE METHODS /////////////////////////////
 
 
 
-// end of the component
-}
+
 
     
 //     componentDidMount(){ 
@@ -555,7 +567,7 @@ const executeHelpStage = (stageNum) => {
         
 //         if (this.state.helpStage===1){ 
     
-//             this.playSound(0); 
+//             playSound(0); 
 //         }
 //     };  
 
@@ -599,7 +611,7 @@ const executeHelpStage = (stageNum) => {
 //             if (this.state.helpStage === 2) {
 //                 this.selectOption(index); 
 //                 // play the sound for the next stage  
-//                 this.playSound(1);
+//                 playSound(1);
     
 //                 // set stage to 2.1 so that the options can't be selected again
 //                 this.setHelpStage(2.1); 
@@ -615,7 +627,7 @@ const executeHelpStage = (stageNum) => {
 //                 // we are in the repeat stage  
 //                 this.selectOption(index); 
 //                 // play the sound that says that the option can be deslected or the submit button selected 
-//                 this.playSound(5);  
+//                 playSound(5);  
 //             } 
 //             else if(this.state.helpStage===11){ 
 //                 this.selectOption(index); 
@@ -659,43 +671,34 @@ const executeHelpStage = (stageNum) => {
 //         this.optionsReset(); 
 //     } 
 
-//     removeOption = (index) => { 
-//         // get the current object that has the array to be updated 
-//         let selected = this.state.selected; 
-//         // get the current array that is going to be updated 
-//         let options = selected.options;   
+    removeOption = (index) => { 
+        // get the current object that has the array to be updated 
 
-//         // get the index of the main option with the index that was selected 
-//         let optionsIndex = options[index].index; 
-//         // set the state of the main options of that index to true 
-//         let alphabetOptions= this.state.alphabetOptions; 
-//         // get the option that we selected before 
-//         let currentAlphabetOption = alphabetOptions[optionsIndex]; 
-//         currentAlphabetOption.show = true;  
-//         // replace the old one with the current one 
-//         alphabetOptions.splice(optionsIndex,1,currentAlphabetOption); 
+        let options = selectedState.options;   
 
-//          // remove the seleted option from this option 
-//          options.splice(index,1); 
+        // get the index of the main option with the index that was selected 
+        let optionsIndex = options[index].index;  
 
-//          // update the created object 
-//          selected.options = options; 
+        // dispatch the method to show the correct one from the aphabet options 
+        dispatchAlphabetOptions({type:'SHOW', ind: optionsIndex}); 
 
-//         // update the state with these new options 
-//         this.setState({alphabetOptions, selected});
-//     } 
-//     removeOptions = () => { 
-//         for(let i = 0; i<this.state.selected.options.length; i++){ 
-//             this.removeOption(i); 
-//         }
-//     }
+        // remove the one with that index from the selected 
+        dispatchSelected({type:'REMOVE_OPTION', id: index}); 
+        
+    } 
+    
+    removeOptions = () => { 
+        for(let i = 0; i<selectedState.options.length; i++){ 
+            this.removeOption(i); 
+        }
+    }
 
 //     boardOptionClick = (index) => {
 //         if (this.state.mode === 'help') {
 //             if (this.state.helpStage === 3) {
 //                 this.removeOption(index);
 //                 // play sound for next stage 
-//                 this.playSound(2);
+//                 playSound(2);
 //             }
 //             else if (this.state.helpStage === 10) {
 //                 // remove the option that was selected 
@@ -711,7 +714,7 @@ const executeHelpStage = (stageNum) => {
 //             this.removeOption(index);  
 //             // disable the submit 
 //             this.disableSubmit(); 
-//             this.submitReset(); 
+//             dispatchSubmit({type: 'RESET'});
 //             // go back to the stage 2 
 //             this.setGameStage(2); 
 //         }
@@ -784,14 +787,6 @@ const executeHelpStage = (stageNum) => {
 
 //     // END OPTIONS METHDOS //////////////////////// 
 
-//     // SUBMIT METHODS ////////////////////////// 
-//     submitGlow = () => { 
-//         this.setState(prevState => ({submit: updateObject(prevState.submit, {glow: true})})); 
-//     } 
-
-//     submitReset = () => { 
-//         this.setState(prevState => ({submit: updateObject(prevState.submit, {glow: false, submitted: false, canSubmit: false, show: false})})); 
-//     } 
 
 //     submitHandler = () => { 
 //         // check if the user can submit 
@@ -862,16 +857,15 @@ const executeHelpStage = (stageNum) => {
 
 //     // SOUND METHODS ///////////////////////////////////
 
-//     playSound = (audio) => {   
-//          // if it's in the help mode, it takes from the array but if it's in the game mode, it plays what is already there in the game mode. 
-//         if(this.state.mode==='help'){ 
-//             this.setState({currentTeacherSound: {playing: true, sound: this.state.helpSounds[audio].sound}}); 
-//         }
-//         else if(this.state.mode==='game'){ 
-//             this.setState({currentTeacherSound: {playing:true, sound: audio}}); 
-//         }
-            
-//     }  
+   const playSound = (audio) => {   
+         // if it's in the help mode, it takes from the array but if it's in the game mode, it plays what is already there in the game mode. 
+        if(mode==='help'){ 
+            dispatchCurrentTeacherSound({type: 'PLAY', sound: helpSounds[audio].sound}); 
+        }
+        else if(mode==='game'){ 
+            dispatchCurrentTeacherSound({type: 'PLAY', sound: audio});
+        }
+   }  
     
 //     playBoardSound = (audio,gbid) => {  
 //         // if it's in the help mode, it takes from the array but if it's in the game mode, it plays what is already there in the game mode. 
@@ -884,20 +878,21 @@ const executeHelpStage = (stageNum) => {
      
 //     } 
 
-//     playGameSound = (index) => { 
-//         this.setState({currentGameSound: {playing: true, sound: this.state.gameSounds[index].sound, type: this.state.gameSounds[index].type}}); 
-//     }  
+ const  playGameSound = (index) => { 
+        dispatchCurrentGameSound({type: 'PLAY', sound: })
+        this.setState({currentGameSound: {playing: true, sound: this.state.gameSounds[index].sound, type: this.state.gameSounds[index].type}}); 
+    }  
 
-//     playCorrectScoreSound = (score) => { 
-//         // form the score url 
-//         const scoreUrl = `https://mavis-assessment.s3.eu-west-2.amazonaws.com/audio/cor${score}.mp3`; 
-//         this.setState({currentGameSound: {playing: true, sound: scoreUrl, type: 'correct'}, correctPop: true}); 
-//     } 
+    // playCorrectScoreSound = (score) => { 
+    //     // form the score url 
+    //     const scoreUrl = `https://mavis-assessment.s3.eu-west-2.amazonaws.com/audio/cor${score}.mp3`; 
+    //     this.setState({currentGameSound: {playing: true, sound: scoreUrl, type: 'correct'}, correctPop: true}); 
+    // } 
 
-//     playWrongScoreSound = (score) => { 
-//         const scoreUrl = `https://mavis-assessment.s3.eu-west-2.amazonaws.com/audio/wor${score}.mp3`; 
-//         this.setState({currentGameSound: {playing: true, sound: scoreUrl, type: 'wrong'}, wrongPop: true}); 
-//     }
+    // playWrongScoreSound = (score) => { 
+    //     const scoreUrl = `https://mavis-assessment.s3.eu-west-2.amazonaws.com/audio/wor${score}.mp3`; 
+    //     this.setState({currentGameSound: {playing: true, sound: scoreUrl, type: 'wrong'}, wrongPop: true}); 
+    // }
 
 
 //     handleAudioEnd = () => {
@@ -1124,183 +1119,185 @@ const executeHelpStage = (stageNum) => {
 
     
  
-//     render(){  
+
        
-//         return (
-//             <div className="container">
-//                 <ReactHowler src={this.state.currentTeacherSound.sound} playing={this.state.currentTeacherSound.playing} onEnd={this.handleAudioEnd} onPlay={this.handleAudioPlay} />
-//                 <ReactHowler src={this.state.currentBoardSound.sound} playing={this.state.currentBoardSound.playing} onEnd={this.handleBoardAudioEnd} onPlay={this.handleBoardAudioPlay} /> 
-//                 <ReactHowler src={this.state.currentGameSound.sound} playing={this.state.currentGameSound.playing} onEnd={this.handleGameSoundEnd} />
-//                 <Head>
-//                     <title>Mavis Assessment Test</title>
-//                     <link rel="icon" href="/favicon.ico" />
-//                 </Head>
-//                 <div className="teacherContainer">
-//                     <Teacher teacher={this.state.teacher} handleClick={this.teacherClickHandler} />
-//                 </div> 
-//                 <div className="refreshContainer">
-//                     <RefreshIcon clicked = {this.refreshHandler}/> 
-//                 </div>
-//                 <div className="headerContainer">
-//                     <Welcome header="The Alphabet"/> 
-//                 </div> 
+        return (
+            <div className="container">
+                <ReactHowler src={this.state.currentTeacherSound.sound} playing={this.state.currentTeacherSound.playing} onEnd={this.handleAudioEnd} onPlay={this.handleAudioPlay} />
+                <ReactHowler src={this.state.currentBoardSound.sound} playing={this.state.currentBoardSound.playing} onEnd={this.handleBoardAudioEnd} onPlay={this.handleBoardAudioPlay} /> 
+                <ReactHowler src={this.state.currentGameSound.sound} playing={this.state.currentGameSound.playing} onEnd={this.handleGameSoundEnd} />
+                <Head>
+                    <title>Mavis Assessment Test</title>
+                    <link rel="icon" href="/favicon.ico" />
+                </Head>
+                <div className="teacherContainer">
+                    <Teacher teacher={this.state.teacher} handleClick={this.teacherClickHandler} />
+                </div> 
+                <div className="refreshContainer">
+                    <RefreshIcon clicked = {this.refreshHandler}/> 
+                </div>
+                <div className="headerContainer">
+                    <Welcome header="The Alphabet"/> 
+                </div> 
 
-//                 <div className="hamburger">
-//                     <MenuIcon /> 
-//                 </div> 
-//                 <div className="clockContainer">
-//                     {this.state.timerMode === 'countdown' ? <BalloonCountdown continue={this.state.countdown.continue} finished={this.finishedHandler} ended={this.state.countdown.ended} reset = {this.state.countdown.reset}/> : <Clock />  } 
-//                 </div> 
-//                 <Board content= {this.state.boardContent}
-//                     selected = {this.state.selected}
-//                     opglow = {this.state.boardOptionsGlow}
-//                     boardTeachers = {this.state.boardTeachers}
-//                     handleClick = {this.boardOptionClick} 
-//                     handleTeacherClick = {this.boardTeacherClickHandler}
-//                     submit={this.state.submit}
-//                     handleSubmitClicked = {this.submitHandler}
-//                     mode={this.state.board.mode} 
-//                     score={this.state.score}
-//                     stageNum = {this.state.gameStage}
-//                     correctPop = {this.state.correctPop} 
-//                     wrongPop = {this.state.wrongPop}
-//                 />
-//                 <LeftShelf />
-//                 <RightShelf /> 
-//                 <div className="optionsContainer">
-//                 <AnswerBox options={this.state.alphabetOptions} glow={this.state.optionsGlow} handleClick={this.optionClick} /> 
-//                 </div>
-//                 <div className="bottomShelfContainer">
-//                     <BottomShelf />
-//                 </div>
+                <div className="hamburger">
+                    <MenuIcon /> 
+                </div> 
+                <div className="clockContainer">
+                    {this.state.timerMode === 'countdown' ? <BalloonCountdown continue={this.state.countdown.continue} finished={this.finishedHandler} ended={this.state.countdown.ended} reset = {this.state.countdown.reset}/> : <Clock />  } 
+                </div> 
+                <Board content= {this.state.boardContent}
+                    selected = {this.state.selected}
+                    opglow = {this.state.boardOptionsGlow}
+                    boardTeachers = {this.state.boardTeachers}
+                    handleClick = {this.boardOptionClick} 
+                    handleTeacherClick = {this.boardTeacherClickHandler}
+                    submit={this.state.submit}
+                    handleSubmitClicked = {this.submitHandler}
+                    mode={this.state.board.mode} 
+                    score={this.state.score}
+                    stageNum = {this.state.gameStage}
+                    correctPop = {this.state.correctPop} 
+                    wrongPop = {this.state.wrongPop}
+                />
+                <LeftShelf />
+                <RightShelf /> 
+                <div className="optionsContainer">
+                <AnswerBox options={this.state.alphabetOptions} glow={this.state.optionsGlow} handleClick={this.optionClick} /> 
+                </div>
+                <div className="bottomShelfContainer">
+                    <BottomShelf />
+                </div>
 
-//                 <style jsx>{`
-//                     .container{ 
-//                         background-color: ${this.state.mode==='help' ? '#f5b799' : '#FFF683'}; 
-//                         display: grid; 
-//                         grid-template-columns: repeat(8, 1fr);
-//                         grid-template-rows: repeat(20, 5vh); 
-//                         transition: background-color 1.5s ;   
-//                     } 
+                <style jsx>{`
+                    .container{ 
+                        background-color: ${this.state.mode==='help' ? '#f5b799' : '#FFF683'}; 
+                        display: grid; 
+                        grid-template-columns: repeat(8, 1fr);
+                        grid-template-rows: repeat(20, 5vh); 
+                        transition: background-color 1.5s ;   
+                    } 
     
-//                     .teacherContainer{ 
-//                         display: grid; 
-//                         align-items: center; 
-//                         justify-items: center; 
-//                         grid-row: 1/6; 
-//                         grid-column: 1/2; 
-//                     } 
+                    .teacherContainer{ 
+                        display: grid; 
+                        align-items: center; 
+                        justify-items: center; 
+                        grid-row: 1/6; 
+                        grid-column: 1/2; 
+                    } 
 
-//                     .refreshContainer{ 
-//                         display: grid; 
-//                         align-items: center; 
-//                         justify-items: center; 
-//                         grid-row:6/8; 
-//                         grid-column: 1/2; 
-//                     }
+                    .refreshContainer{ 
+                        display: grid; 
+                        align-items: center; 
+                        justify-items: center; 
+                        grid-row:6/8; 
+                        grid-column: 1/2; 
+                    }
 
-//                     .headerContainer{ 
-//                         display: grid; 
-//                         justify-items: center; 
-//                         align-content: center; 
-//                         grid-row: 1/4; 
-//                         grid-column: 2/8; 
-//                     } 
+                    .headerContainer{ 
+                        display: grid; 
+                        justify-items: center; 
+                        align-content: center; 
+                        grid-row: 1/4; 
+                        grid-column: 2/8; 
+                    } 
 
-//                     .hamburger{ 
-//                         grid-row: 1/3; 
-//                         grid-column: 8/9; 
-//                         align-self: center; 
-//                         justify-self: end; 
-//                         margin-right: 20px; 
+                    .hamburger{ 
+                        grid-row: 1/3; 
+                        grid-column: 8/9; 
+                        align-self: center; 
+                        justify-self: end; 
+                        margin-right: 20px; 
                         
-//                     } 
+                    } 
 
-//                     .clockContainer{ 
-//                         grid-row: 3/6; 
-//                         grid-column: 8/9;
-//                         display: grid;
-//                         align-content: center; 
-//                         justify-content: center;
-//                     } 
+                    .clockContainer{ 
+                        grid-row: 3/6; 
+                        grid-column: 8/9;
+                        display: grid;
+                        align-content: center; 
+                        justify-content: center;
+                    } 
 
-//                     .optionsContainer{ 
-//                         background-color: gainsboro; 
-//                         grid-row: 16/19; 
-//                         grid-column: 2/8;
-//                         padding-top: 1rem; 
-//                         padding-left: 1rem; 
-//                     } 
+                    .optionsContainer{ 
+                        background-color: gainsboro; 
+                        grid-row: 16/19; 
+                        grid-column: 2/8;
+                        padding-top: 1rem; 
+                        padding-left: 1rem; 
+                    } 
 
-//                     .bottomShelfContainer{ 
-//                         background-color: gainsboro; 
-//                         border-top: 1rem solid  #D07026; 
-//                         grid-column: 1/-1; 
-//                         grid-row: 19/21; 
-//                     }
+                    .bottomShelfContainer{ 
+                        background-color: gainsboro; 
+                        border-top: 1rem solid  #D07026; 
+                        grid-column: 1/-1; 
+                        grid-row: 19/21; 
+                    }
 
-//                     @media only screen and (max-width: 1200px){ 
-//                         .teacherContainer{ 
-//                             grid-row:1/5; 
-//                         }
-//                     } 
+                    @media only screen and (max-width: 1200px){ 
+                        .teacherContainer{ 
+                            grid-row:1/5; 
+                        }
+                    } 
 
-//                     @media only screen and (max-width: 1000px){ 
-//                         .teacherContainer{ 
-//                             grid-row:1/4; 
-//                         } 
-//                     } 
+                    @media only screen and (max-width: 1000px){ 
+                        .teacherContainer{ 
+                            grid-row:1/4; 
+                        } 
+                    } 
 
-//                     @media only screen and (max-width: 600px){ 
-//                         .hamburger{ 
-//                             margin-top: 4px; 
-//                             align-self: start; 
-//                             justify-self: end; 
-//                             margin-right: 3px;
-//                         } 
+                    @media only screen and (max-width: 600px){ 
+                        .hamburger{ 
+                            margin-top: 4px; 
+                            align-self: start; 
+                            justify-self: end; 
+                            margin-right: 3px;
+                        } 
 
-//                         .headerContainer{ 
-//                             grid-column: 3/8;
-//                             margin-top: 10px; 
+                        .headerContainer{ 
+                            grid-column: 3/8;
+                            margin-top: 10px; 
                             
-//                         } 
-//                         .teacherContainer{ 
-//                             grid-column: 1/3; 
-//                         } 
+                        } 
+                        .teacherContainer{ 
+                            grid-column: 1/3; 
+                        } 
 
-//                         .refreshContainer{ 
-//                             grid-row: 3/4; 
-//                             grid-column: 3/4; 
-//                             transform: translateY(25px); 
-//                         }
+                        .refreshContainer{ 
+                            grid-row: 3/4; 
+                            grid-column: 3/4; 
+                            transform: translateY(25px); 
+                        }
 
-//                         .clockContainer{ 
-//                             grid-row: 3/5; 
-//                         } 
+                        .clockContainer{ 
+                            grid-row: 3/5; 
+                        } 
 
-//                         .optionsContainer{ 
-//                             grid-column: 1/-1; 
-//                         } 
+                        .optionsContainer{ 
+                            grid-column: 1/-1; 
+                        } 
 
-//                         .bottomShelfContainer{ 
-//                             border-top: none; 
-//                         }
-//                     } 
+                        .bottomShelfContainer{ 
+                            border-top: none; 
+                        }
+                    } 
 
-//                     @media only screen and (max-width: 500px){ 
+                    @media only screen and (max-width: 500px){ 
                         
-//                     } 
+                    } 
 
-//                     @media only screen and (max-height: 600px) { 
-//                         .container{ 
-//                             grid-template-rows: none; 
-//                         } 
-//                     } 
-//                 `}</style>
-//             </div>
-//         );
-//     }
-// }
+                    @media only screen and (max-height: 600px) { 
+                        .container{ 
+                            grid-template-rows: none; 
+                        } 
+                    } 
+                `}</style>
+            </div>
+        );
+
+
+    }
+
 
 
 export default Lesson1; 
