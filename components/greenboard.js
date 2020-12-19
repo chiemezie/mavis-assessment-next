@@ -242,7 +242,7 @@ const Board = (props) => {
                                 {
                                     state => (
                                         <li className={state==='entering' ? 'fadeIn' : state === 'exiting' ? "fadeOut" : null}>
-                                            <TeacherAndText tid={index} teachers={props.boardTeachers} handleTeacherClick={() => props.handleTeacherClick(index)}>{cont}</TeacherAndText>
+                                            <TeacherAndText tid={index} teachers={props.boardTeachers} handleTeacherClick={() => props.handleTeacherClick(index)}>{cont.text}</TeacherAndText>
                                         </li>
                                     )
                                 }
