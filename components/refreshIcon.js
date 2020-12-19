@@ -1,7 +1,4 @@
-import { Component } from 'react'; 
-class RefreshIconSvg extends Component {
-    render() {
-        return (
+const RefreshIconSvg = props =>(
             <>
   
           <svg className="refreshSvg" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" aria-labelledby="title">
@@ -40,9 +37,7 @@ class RefreshIconSvg extends Component {
               `}
                 </style>
            </>
-        )
-      }  
-}
+        ); 
     
 
 const RefreshIcon = (props) => ( 
@@ -57,6 +52,7 @@ const RefreshIcon = (props) => (
                 padding: 2rem; 
                 box-shadow: 0 1rem 2rem rgba(0,0,0, .3); 
                 font-size: 1.2rem; 
+                cursor: pointer; 
                 
             }  
             @media only screen and (max-width: 1000px){ 

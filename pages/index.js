@@ -124,15 +124,17 @@ const updateArray = (arr, ind, obj) => {
 } 
 
 
-const initialCurrentTeacherSoundState = {playing: false,  sound: 'https://mavis-assessment.s3.eu-west-2.amazonaws.com/audio/alhel1.mp3'}; 
+const initialCurrentTeacherSoundState = {playing: false,  sound: 'none.mp3'}; 
 const currentTeacherSoundReducer = (state,action) => { 
     switch(action.type){ 
         case 'PLAY': 
         return {playing: true, sound: action.sound}; 
         case 'STOP': 
         return {...state, playing: false} ;
-        case 'SET_SOUND': 
+        case 'SET': 
         return {playing: false, sound: action.sound};
+        case 'RESET': 
+        return initialCurrentTeacherSoundState; 
         default: 
         throw new Error('Should not get here');
     }
@@ -267,7 +269,7 @@ const currentQuestionReducer = (state,action) => {
 
 
 const Lesson1 = props => { 
-    const [mode, setMode] = useState('game');
+    const [mode, setMode] = useState('help');
     const [executed, setExecuted] = useState('false'); 
     const [boardContentState, dispatchBoardContent] =  useReducer(boardContentReducer, []); 
     const [timerMode, setTimerMode] = useState('default'); 
@@ -377,14 +379,37 @@ const [alphabetOptionsState, dispatchAlphabetOptions] = useReducer(alphabetOptio
 const [gs1Executed, setgs1Executed] = useState(false); 
 const [gs2Executed, setgs2Executed] = useState(false); 
 
+const refreshHandler = () => { 
+    if(mode==='game'){ 
+        dispatchCurrentTeacherSound({type: 'STOP'}); 
+    dispatchTeacher({type:'RESET'});
+    // make the button refresh 
+    dispatchCountdown({type: 'SET_RESET'}); 
+   // set the game stage to 0 
+   dispatchGameStage({type:'SET', num:0});
+    } 
+    else if(mode==='help'){ 
+        dispatchHelpStage({type:'SET', num: 0}); 
+    }
+    //set the playing to false 
+    
+}
 
 //  // HELP STAGE METHODS ////////////////////////////////////
 
 const executeHelpStage = useCallback((stageNum) => { 
-    
+    if(stageNum===0) { 
+        // this is the reset stage set everything to be done and then dispatch the first stage
+        dispatchCurrentTeacherSound({type: 'RESET'}); 
+        setOptionsGlow(false); 
+        dispatchTeacher({type: 'RESET'}); 
+        // set the stage to stage 1 
+        dispatchHelpStage({type: 'SET', num: 1}); 
+    }
     // sort out the different stages 
-    if(stageNum===1){ 
-        // sort out the teacher 
+    else if(stageNum===1){ 
+        dispatchCurrentTeacherSound({type: 'SET', sound: 'https://mavis-assessment.s3.eu-west-2.amazonaws.com/audio/alhel1.mp3'});
+        // sort out the teacher to make it glow
        dispatchTeacher({type: 'GLOW'}); 
     } 
     else if(stageNum===2){ 
@@ -1055,15 +1080,7 @@ const finishedHandler = () => {
    dispatchGameStage({type:'SET', num:5}); 
 }  
 
-const refreshHandler = () => { 
-    //set the playing to false 
-    dispatchCurrentTeacherSound({type: 'STOP'}); 
-    dispatchTeacher({type:'RESET'});
-    // make the button refresh 
-    dispatchCountdown({type: 'SET_RESET'}); 
-   // set the game stage to 0 
-   dispatchGameStage({type:'SET', num:0});
-}
+
 
 
 // // end correct and wrong methods ///////////
@@ -1138,7 +1155,7 @@ const refreshHandler = () => {
                         align-items: center; 
                         justify-items: center; 
                         grid-row:6/8; 
-                        grid-column: 1/2; 
+                        grid-column: 1/2;  
                     }
 
                     .headerContainer{ 
