@@ -1,19 +1,13 @@
-import {Component} from 'react'; 
+import {useState, useEffect} from 'react'; 
 
-class Clock extends Component { 
-     // set the state  
-     state = { 
-        hour: 12,
-        minute: 0, 
-        second: 0,
-        ampm: 'AM'
-    }  
+const  Clock = ()=> { 
+     const [state, setState] = useState({hour: 12, minute: 0, second: 0, ampm: 'AM'}); 
+     
+    useEffect( ()=>{ 
+        setInterval(clock,1000); 
+    },[]); 
 
-    componentDidMount(){ 
-        setInterval(this.clock,1000); 
-    }
-
-    clock = () => {
+const    clock = () => {
         const date = new Date();
 
         //const hours = ((date.getHours() + 11) % 12 + 1);
@@ -38,16 +32,16 @@ class Clock extends Component {
         if(minutes<10){ 
             minutes = "0" + minutes
         }
-        this.setState({hour: hours, minute: minutes, second: seconds, ampm: dayNight}); 
+        setState({hour: hours, minute: minutes, second: seconds, ampm: dayNight}); 
     } 
-    render(){ 
-        const time = `${this.state.hour}:${this.state.minute}`;
+   
+     const time = `${state.hour}:${state.minute}`;
         return(
             <>
                 <div className="clock">
                     <div className="clock__main">{time}</div>
-                    <div className="clock__side--up">{this.state.ampm}</div>
-                    <div className="clock__side--down">{this.state.second}</div>
+                    <div className="clock__side--up">{state.ampm}</div>
+                    <div className="clock__side--down">{state.second}</div>
                 </div> 
                 <style jsx> {`
                     .clock{ 
@@ -121,6 +115,6 @@ class Clock extends Component {
         )
     }
 
-} 
+ 
 
 export default Clock; 
