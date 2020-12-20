@@ -4,7 +4,8 @@ const  Clock = ()=> {
      const [state, setState] = useState({hour: 12, minute: 0, second: 0, ampm: 'AM'}); 
      
     useEffect( ()=>{ 
-        setInterval(clock,1000); 
+        const interval =  setInterval(() => {clock()},1000); 
+        return () => clearInterval(interval); 
     },[]); 
 
 const    clock = () => {

@@ -1,42 +1,50 @@
-import { Component } from 'react';
-
-class BalloonCountdown extends Component {
-    // set the state  
-    state = {
-        second: 20
+import { useEffect, useReducer} from 'react';
+// set the reducer
+const initialCountdownState = 20; 
+const secondReducer = (state,action) => { 
+    switch(action.type){ 
+        case 'COUNTDOWN': 
+        const nstate = state-1;  
+        return nstate;  
+        case 'RESET': 
+        return initialCountdownState
     }
+} 
 
-    componentDidMount() {
+const BalloonCountdown = (props) => {
+    let { ended, continued, reset, finished} = props; 
 
-        setInterval(this.clock, 1000);
-    } 
+    const [second, dispatchSecond] = useReducer(secondReducer, initialCountdownState); 
 
-    
-
-    clock = () => { 
-        if (this.props.reset){ 
-            this.setState({second: 20}); 
+    useEffect(() => { 
+        const interval = setInterval(() => {
+           clock();
+          }, 1000);
+         return () => clearInterval(interval);
+    },[props,second]); 
+   
+  const  clock = () => { 
+        
+        if (reset){ 
+            console.log("still in the reset mode"); 
+            dispatchSecond({type: 'RESET'}); 
         }
         // check if the second is 0 
-        else if (this.state.second > 0) {
-            this.setState(prevState => {
-                this.props.continue && prevState.second > 0 ? prevState.second-- : null
-                return ({ second: prevState.second });
-            });
+        else if (second > 0) { 
+            continued? dispatchSecond({type: 'COUNTDOWN'}) : null; 
         }
         else {
-            if (!this.props.ended) {
-                this.inputElement.click();
+            if (!ended) {
+               finished(); 
             }
 
         }
 
     }
-    render() {
+    
         return (
             <>
-                <div className="balloon">{this.state.second}</div>
-                <input style={{ display: 'none' }} ref={input => this.inputElement = input} onClick={this.props.finished} />
+                <div className="balloon">{second}</div>
                 <style jsx> {`
                 .balloon {
           display:grid;
@@ -125,6 +133,5 @@ class BalloonCountdown extends Component {
             </>
         );
     }
-}
 
 export default BalloonCountdown

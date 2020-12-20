@@ -269,7 +269,7 @@ const currentQuestionReducer = (state,action) => {
 
 
 const Lesson1 = props => { 
-    const [mode, setMode] = useState('help');
+    const [mode, setMode] = useState('game');
     const [executed, setExecuted] = useState('false'); 
     const [boardContentState, dispatchBoardContent] =  useReducer(boardContentReducer, []); 
     const [timerMode, setTimerMode] = useState('default'); 
@@ -353,8 +353,7 @@ const [answers, setAnswers] = useState([
             {aid: 25, content: "y"},
             {aid: 26, content: "z"}
 ]) 
-const [currentQuestion, dispatchCurrentQuestion] = useReducer(currentQuestionReducer, initialCurrentQuestionState); 
-//const [currentQuestion, setCurrentQuestion] = useState({qid: 1, aid: 1, sound: 'https://mavis-assessment.s3.eu-west-2.amazonaws.com/audio/tapa.mp3'}); 
+const [currentQuestion, dispatchCurrentQuestion] = useReducer(currentQuestionReducer, initialCurrentQuestionState);  
 const [currentTeacherSoundState, dispatchCurrentTeacherSound] = useReducer(currentTeacherSoundReducer, initialCurrentTeacherSoundState);   
 const [currentBoardSoundState, dispatchCurrentBoardSound] = useReducer(currentBoardSoundReducer, initialCurrentBoardSoundState); 
 const [boardSounds, setBoardSounds] = useState([
@@ -371,10 +370,6 @@ const [currentGameSoundState, dispatchCurrentGameSound] = useReducer(currentGame
 
 const [selectedState, dispatchSelected] = useReducer(selectedReducer, initialSelectedState); 
 const [submitState, dispatchSubmit] = useReducer(submitReducer, initialSubmitState); 
-const [correctPlaying, setCorrectPlaying] = useState(false); 
-const [wrongPlaying, setWrongPlaying] = useState(false); 
-const [currentAnsIndex, setCurrentAnsIndex] = useState(1); 
-const [selectedAnsIndex, setSelectedAnsIndex] = useState(0); 
 const [alphabetOptionsState, dispatchAlphabetOptions] = useReducer(alphabetOptionsReducer,initialAlphabetOptionsState); 
 const [gs1Executed, setgs1Executed] = useState(false); 
 const [gs2Executed, setgs2Executed] = useState(false); 
@@ -527,7 +522,6 @@ const  executeGameStage = useCallback((stageNum) => {
                 // set the refresh back to false so that it can continue counting down
                 dispatchCountdown({type: 'START'});
                 // stop the countdown 
-    
                 // get the length questions 
                 const max = questions.length; 
                 // get a random number 
@@ -1108,7 +1102,7 @@ const finishedHandler = () => {
                     <MenuIcon /> 
                 </div> 
                 <div className="clockContainer">
-                    {timerMode === 'countdown' ? <BalloonCountdown continue={countdownState.continue} finished={finishedHandler} ended={countdownState.ended} reset = {countdownState.reset}/> : <Clock />  } 
+                    {timerMode === 'countdown' ? <BalloonCountdown continued={countdownState.continue} finished={finishedHandler} ended={countdownState.ended} reset = {countdownState.reset}/> : <Clock />  } 
                 </div> 
                 <Board content= {boardContentState}
                     selected = {selectedState}
