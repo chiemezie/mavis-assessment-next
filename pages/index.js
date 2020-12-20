@@ -14,6 +14,7 @@ import BottomShelf from '../components/bottomShelf';
 import AnswerBox from '../components/answerbox'; 
 import ReactHowler from 'react-howler'; 
 import {updateObject } from '../shared/utility';  
+import swal from 'sweetalert'; 
 
 const helpStageReducer = (state,action) => { 
     // round off the state 
@@ -376,12 +377,29 @@ const [gs2Executed, setgs2Executed] = useState(false);
 
 const refreshHandler = () => { 
     if(mode==='game'){ 
-        dispatchCurrentTeacherSound({type: 'STOP'}); 
-    dispatchTeacher({type:'RESET'});
-    // make the button refresh 
-    dispatchCountdown({type: 'SET_RESET'}); 
-   // set the game stage to 0 
-   dispatchGameStage({type:'SET', num:0});
+        // pause the ongoing game 
+        dispatchCountdown({type: 'PAUSE'}); 
+        // first put the modal to be sure that the person wants to stop 
+        swal({
+            title: "Refresh",
+            text: "Are you sure you want to refresh?",
+            icon: "warning",
+            buttons: ["Cancel", "Refresh"],
+          }).then((value) => { 
+              if(value){
+                dispatchCurrentTeacherSound({type: 'STOP'}); 
+                dispatchTeacher({type:'RESET'});
+                // make the button refresh 
+                dispatchCountdown({type: 'SET_RESET'}); 
+               // set the game stage to 0 
+               dispatchGameStage({type:'SET', num:0});
+              } 
+              else{ 
+                  // continue the game that was paused
+                  dispatchCountdown({type: 'CONTINUE'}); 
+              }
+           
+          }); 
     } 
     else if(mode==='help'){ 
         dispatchHelpStage({type:'SET', num: 0}); 
@@ -612,6 +630,7 @@ useEffect(() => {
     
     
 const  teacherClickHandler = () => { 
+       
         // check if the mode is help first 
         if(mode === 'help'){ 
             if(helpStage===1){ 
@@ -1128,6 +1147,9 @@ const finishedHandler = () => {
                 </div>
 
                 <style jsx>{`
+                    .swal-overlay {
+                        background-color: rgba(43, 165, 137, 0.45);
+                    }
                     .container{ 
                         background-color: ${mode==='help' ? '#f5b799' : '#FFF683'}; 
                         display: grid; 

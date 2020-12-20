@@ -21,7 +21,7 @@ const BalloonCountdown = (props) => {
            clock();
           }, 1000);
          return () => clearInterval(interval);
-    },[props,second]); 
+    },[ended,continued,reset,finished,second]); 
    
   const  clock = () => { 
         
