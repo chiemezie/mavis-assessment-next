@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@svgr/webpack": "^5.5.0",
+    "howler": "^2.2.1",
     "next": "9.5.5",
     "next-images": "^1.6.2",
     "react": "17.0.1",

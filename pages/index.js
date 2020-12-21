@@ -273,7 +273,7 @@ const currentQuestionReducer = (state,action) => {
 
 
 const Lesson1 = props => { 
-    const [mode, setMode] = useState('game');
+    const [mode, setMode] = useState('help');
     const [executed, setExecuted] = useState('false'); 
     const [boardContentState, dispatchBoardContent] =  useReducer(boardContentReducer, []); 
     const [timerMode, setTimerMode] = useState('default'); 
@@ -416,6 +416,7 @@ const refreshHandler = () => {
 const executeHelpStage = useCallback((stageNum) => { 
     if(stageNum===0) { 
         // this is the reset stage set everything to be done and then dispatch the first stage
+        console.log("entered stage "+stageNum); 
         dispatchCurrentTeacherSound({type: 'RESET'}); 
         setOptionsGlow(false); 
         dispatchTeacher({type: 'RESET'}); 
@@ -440,46 +441,51 @@ const executeHelpStage = useCallback((stageNum) => {
     }
     // sort out the different stages 
     else if(stageNum===1){ 
+        console.log("entered stage "+stageNum); 
         dispatchCurrentTeacherSound({type: 'SET', sound: 'https://mavis-assessment.s3.eu-west-2.amazonaws.com/audio/alhel1.mp3'});
         // sort out the teacher to make it glow
        dispatchTeacher({type: 'GLOW'}); 
     } 
     else if(stageNum===2){ 
+        console.log("entered stage "+stageNum); 
         // set the options to glow
        setOptionsGlow(true); 
     } 
     else if(stageNum===3){ 
+        console.log("entered stage "+stageNum); 
         // set the board options to glow 
         setBoardOptionsGlow(true); 
     } 
     else if (stageNum===4){ 
+        console.log("entered stage "+stageNum); 
         setBoardOptionsGlow(false); 
         dispatchBoardTeacher({type: 'GLOW', ind: 0}); 
     } 
     else if (stageNum ===5){  
+        console.log("entered stage "+stageNum); 
         // this time the work for this stage is to say something 
    
         playSound(3); 
     } 
     else if (stageNum===6){ 
-        
+        console.log("entered stage "+stageNum); 
         setOptionsGlow(true); 
     } 
     else if(stageNum===7){ 
         // this time the work is to say something again 
-        
+        console.log("entered stage "+stageNum); 
         playSound(4); 
     } 
     else if(stageNum===8){ 
         // make the submit button glow 
-       
+        console.log("entered stage "+stageNum); 
        dispatchSubmit({type: 'GLOW'});;  
         // make the submit button submittable 
        dispatchSubmit({type: 'ENABLE_SUBMIT'}); 
     } 
     else if (stageNum===9) { 
         //we are at the repeat stage to try to get it correct again 
-       
+        console.log("entered stage "+stageNum); 
         // remove all the options from the board 
         removeOptions(); 
         // let the options glow again 
@@ -491,6 +497,7 @@ const executeHelpStage = useCallback((stageNum) => {
         dispatchHelpStage({type: 'ADD'}); 
     }  
     else if (stageNum ===10) { 
+        console.log("entered stage "+stageNum); 
         setBoardOptionsGlow(false); 
         if(!executed){
             setOptionsGlow(true); 
@@ -500,6 +507,7 @@ const executeHelpStage = useCallback((stageNum) => {
         }
     }
     else if (stageNum===11) { 
+        console.log("entered stage "+stageNum); 
         setExecuted(false); 
         // we've just finished saying that the user can select the button on the board to remove or submit  
         // let the board option glow 
@@ -511,6 +519,7 @@ const executeHelpStage = useCallback((stageNum) => {
         
     } 
     else if(stageNum ===12) { 
+        console.log("entered stage "+stageNum); 
         // at this stage we've gotten everything correct and we want to start the game proper 
         // say that it's time to start the game 
         playSound(6);  
@@ -520,7 +529,7 @@ const executeHelpStage = useCallback((stageNum) => {
         setMode('game'); 
     }
         // the help stages have finished execute the first game stage     
-},[selectedState]);
+},[selectedState,mode]);
 
 
 const    getRandomInt = (max) => { 
@@ -636,7 +645,7 @@ const  executeGameStage = useCallback((stageNum) => {
             // put the referesh button to start a new game (at the top where the welcome to class is supposed to be) -- figure that one out. 
 
         }
-    },[selectedState,countdownState]); 
+    },[selectedState,countdownState,mode]); 
 // END HELP STAGE METHODS /////////////////////////////
 
 // this use effect is to execute the helpStage 
@@ -904,6 +913,7 @@ const checkAnswer = () => {
 //     // SOUND METHODS ///////////////////////////////////
 
    const playSound = (audio) => {   
+       console.log("audio is "+audio+ " and mode is "+mode); 
          // if it's in the help mode, it takes from the array but if it's in the game mode, it plays what is already there in the game mode. 
         if(mode==='help'){ 
             dispatchCurrentTeacherSound({type: 'PLAY', sound: helpSounds[audio].sound}); 
@@ -1124,8 +1134,7 @@ const toggleIconHandler = () => {
             buttons: ["Cancel", "Game Mode"],
           }).then((value) => { 
             if(value){   
-             dispatchGameStage({type: 'SET', num:0}); 
-             setMode('game');
+             dispatchHelpStage({type: 'SET', num:null}); 
             } 
             else{ 
                 // continue the game that was paused
