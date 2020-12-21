@@ -1,0 +1,16 @@
+.icon {
+  display: inline-block;
+  background-repeat: no-repeat;
+  background-image: url(sprite.svg);
+}
+.icon-game-controller {
+  width: 20px;
+  height: 20px;
+  background-position: 0 0;
+}
+.icon-help {
+  width: 20px;
+  height: 20px;
+  background-position: -36px 0;
+}
+

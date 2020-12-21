@@ -9,29 +9,29 @@ const RefreshIconSvg = props =>(
                     {`
                   
               .refreshSvg{ 
-                   width: 5rem; 
-                   height: 5rem;
+                   width: 4rem; 
+                   height: 4rem;
                    fill: white; 
               }  
 
               @media only screen and (max-width: 1200px){ 
                   .refreshSvg{ 
-                      width: 4rem; 
-                      height: 4rem; 
+                      width: 3rem; 
+                      height: 3rem; 
                   }
               }
 
               @media only screen and (max-width: 900px){ 
                   .refreshSvg{ 
-                      width: 3rem; 
-                      height: 3rem; 
+                      width: 2.5rem; 
+                      height: 2.5rem; 
                   }
               } 
 
               @media only screen and (max-width: 600px){ 
                 .refreshSvg{ 
-                    width: 2.5rem; 
-                    height: 2.5rem; 
+                    width: 2rem; 
+                    height: 2rem; 
                 }
               }
               `}

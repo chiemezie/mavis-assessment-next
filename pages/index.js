@@ -5,7 +5,8 @@ import Teacher from '../components/teacher';
 import Welcome from '../components/welcome'; 
 import MenuIcon from '../components/menuIcon'; 
 import Clock from '../components/clock';
-import RefreshIcon from '../components/refreshIcon'; 
+import RefreshIcon from '../components/refreshIcon';
+import ToggleIcon from '../components/gameToggleIcon';  
 import BalloonCountdown from '../components/ballooncountdown'; 
 import Board from '../components/greenboard';
 import LeftShelf from '../components/leftShelf';
@@ -235,7 +236,9 @@ const alphabetOptionsReducer = (state,action) => {
         case 'SET': 
         return action.arr; 
         case 'RESET': 
-        return []; 
+        return [];  
+        case 'INIT': 
+        return initialAlphabetOptionsState; 
         default: 
         throw new Error('Should not get here');
     }
@@ -416,6 +419,22 @@ const executeHelpStage = useCallback((stageNum) => {
         dispatchCurrentTeacherSound({type: 'RESET'}); 
         setOptionsGlow(false); 
         dispatchTeacher({type: 'RESET'}); 
+        dispatchBoardTeacher({type: 'RESET'});
+         // clear the board 
+       dispatchBoardContent({type: 'RESET'}); 
+
+      // clear the option that was on the board 
+       dispatchSelected({type: 'RESET_OPTIONS'}); 
+    
+       // clear the options box 
+        dispatchAlphabetOptions({type: 'INIT'}); 
+        dispatchScore({type: 'SHOW'});
+        
+        setTimerMode('default');   
+
+        //disable the submit button 
+        dispatchSubmit({type: 'DISABLE_SUBMIT'}); 
+
         // set the stage to stage 1 
         dispatchHelpStage({type: 'SET', num: 1}); 
     }
@@ -1091,7 +1110,51 @@ const handleGameSoundEnd = () => {
 const finishedHandler = () => { 
     dispatchCountdown({type: 'END'})
    dispatchGameStage({type:'SET', num:5}); 
-}  
+} 
+
+const toggleIconHandler = () => { 
+    // check if it's the help or game mode 
+    if(mode==='help'){ 
+        // if it's the help mode, show the modal 
+        dispatchCurrentTeacherSound({type: 'STOP'}); 
+        swal({
+            title: "Switch Mode",
+            text: "Do you want to switch to the game mode?",
+            icon: "warning",
+            buttons: ["Cancel", "Game Mode"],
+          }).then((value) => { 
+            if(value){   
+             dispatchGameStage({type: 'SET', num:0}); 
+             setMode('game');
+            } 
+            else{ 
+                // continue the game that was paused
+                dispatchCurrentTeacherSound({type: 'PLAY'});  
+            }
+         
+        }); 
+    } 
+    else if(mode ==='game'){ 
+         // if it's the help mode, show the modal 
+         dispatchCountdown({type: 'PAUSE'}); 
+         swal({
+             title: "Switch Mode",
+             text: "Do you want to switch to the help mode?",
+             icon: "warning",
+             buttons: ["Cancel", "Help Mode"],
+           }).then((value) => { 
+             if(value){   
+              dispatchHelpStage({type: 'SET', num:0});  
+              setMode('help');
+             } 
+             else{ 
+                 // continue the game that was paused
+                 dispatchCountdown({type: 'CONTINUE'});  
+             }
+          
+         }); 
+    }
+}
 
 
 
@@ -1112,6 +1175,7 @@ const finishedHandler = () => {
                 </div> 
                 <div className="refreshContainer">
                     <RefreshIcon clicked = {refreshHandler}/> 
+                    <ToggleIcon mode={mode} clicked = {toggleIconHandler}/>
                 </div>
                 <div className="headerContainer">
                     <Welcome header="The Alphabet"/> 
@@ -1147,9 +1211,6 @@ const finishedHandler = () => {
                 </div>
 
                 <style jsx>{`
-                    .swal-overlay {
-                        background-color: rgba(43, 165, 137, 0.45);
-                    }
                     .container{ 
                         background-color: ${mode==='help' ? '#f5b799' : '#FFF683'}; 
                         display: grid; 
@@ -1172,6 +1233,7 @@ const finishedHandler = () => {
                         justify-items: center; 
                         grid-row:6/8; 
                         grid-column: 1/2;  
+                        grid-template-columns: repeat(2, 1fr); 
                     }
 
                     .headerContainer{ 
@@ -1197,6 +1259,7 @@ const finishedHandler = () => {
                         display: grid;
                         align-content: center; 
                         justify-content: center;
+                        margin-top: 15px; 
                     } 
 
                     .optionsContainer{ 
@@ -1212,17 +1275,28 @@ const finishedHandler = () => {
                         border-top: 1rem solid  #D07026; 
                         grid-column: 1/-1; 
                         grid-row: 19/21; 
+                    } 
+
+                    @media only screen and (max-width: 1350px){ 
+                        .refreshContainer{ 
+                            grid-template-columns: auto;
+                            grid-template-rows: repeat(2, 1fr); 
+                            row-gap: 4px;  
+                        }
                     }
 
                     @media only screen and (max-width: 1200px){ 
                         .teacherContainer{ 
                             grid-row:1/5; 
-                        }
+                        } 
                     } 
 
                     @media only screen and (max-width: 1000px){ 
                         .teacherContainer{ 
                             grid-row:1/4; 
+                        } 
+                        .refreshContainer { 
+                            row-gap: 20px; 
                         } 
                     } 
 
@@ -1247,6 +1321,10 @@ const finishedHandler = () => {
                             grid-row: 3/4; 
                             grid-column: 3/4; 
                             transform: translateY(25px); 
+                            grid-template-rows: auto; 
+                            row-gap: 0px; 
+                            grid-template-columns: repeat(2, 1fr); 
+                            column-gap: 15px; 
                         }
 
                         .clockContainer{ 
