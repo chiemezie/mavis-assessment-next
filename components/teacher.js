@@ -12,12 +12,17 @@ const Teacher = (props) => {
         <>
             
             <div className={classes.join(' ')} onClick={props.handleClick}></div>
+            <div className='hiddenLoader'></div>
             <style jsx> {`
                 .main{
                     width: 100% ;
                     height: 100%;  
                     background: no-repeat center/80% url("teacher1.svg");
                     cursor: pointer;  
+                } 
+                .hiddenLoader{ 
+                    display: none; 
+                    background: no-repeat center/80% url("teacher1.svg");
                 } 
     
                 .talk{ 
