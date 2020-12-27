@@ -67,7 +67,7 @@ class AlphabetOption extends Component {
                         } 
     
                         50% { 
-                            transform: scale(1.2);
+                            transform: scale(1.08);
                         }
     
                         100% { 

@@ -2,12 +2,11 @@ import Teacher from './teacher';
 import TextOnly from './textonly'; 
 
 const TeacherAndText = (props) => {
-    
     return( 
     <>
         <div className="container">
             <div className="teacherContainer">
-                <Teacher teacher={props.teachers[props.tid]} handleClick = {props.handleTeacherClick} /> 
+                <Teacher teacher={props.teacher} handleClick = {props.handleTeacherClick} /> 
             </div>
             
             <TextOnly>{props.children}</TextOnly>
@@ -21,7 +20,8 @@ const TeacherAndText = (props) => {
             } 
             .teacherContainer{ 
                 width: 12rem; 
-                height: 12rem;  
+                height: 12rem; 
+                display: ${props.sound?'block':'none'}
             } 
 
             @media only screen and (max-width: 1200px){ 

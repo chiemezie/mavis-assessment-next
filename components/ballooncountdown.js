@@ -26,7 +26,6 @@ const BalloonCountdown = (props) => {
   const  clock = () => { 
         
         if (reset){ 
-            console.log("still in the reset mode"); 
             dispatchSecond({type: 'RESET'}); 
         }
         // check if the second is 0 
