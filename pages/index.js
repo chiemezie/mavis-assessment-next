@@ -1414,7 +1414,10 @@ const toggleIconHandler = () => {
 
                 <style jsx>{`
                     .container{ 
+                       // max-width:120rem; 
+                       // margin: 8rem auto; 
                         background-color: ${mode==='help' ? '#f5b799' : '#FFF683'}; 
+                       // background-color: white; 
                         display: grid; 
                         grid-template-columns: repeat(8, 1fr);
                         grid-template-rows: repeat(20, 5vh); 
