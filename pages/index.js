@@ -1411,9 +1411,9 @@ const toggleIconHandler = () => {
                 <style jsx>{`
                     .container{ 
                         //background-color: ${mode==='help' ? '#f5b799' : '#FFF683'}; 
-                        background-color: ${mode==='help' ? '#ffdb99' : '#cc00cc'};
+                        background-color: ${mode==='help' ? '#ffdb99' : 'rgba(207, 217, 30, .7)'};
                         display: grid; 
-                        grid-template-rows: 6rem 80vh min-content; 
+                        grid-template-rows: 6rem 80vh minmax(14vh, min-content); 
                         grid-template-columns: [full-start] 1fr [center-start] repeat(12, [col-start] minmax(min-content, 14rem) [col-end]) [center-end] 1fr [full-end]; 
                         transition: background-color 1.5s ;   
                     }  
@@ -1425,7 +1425,7 @@ const toggleIconHandler = () => {
                         justify-items: center;
                         align-items: center; 
                         border-bottom: 1px solid rgb(229, 228, 226) ; 
-                        background-color: ${mode==='help' ? '#ffedcc' : '#ff99ff'};
+                        background-color: ${mode==='help' ? '#ffedcc' : '#eff3a5'};
                     }  
                     .sidebar{ 
                         grid-row: 2/4; 
@@ -1454,7 +1454,6 @@ const toggleIconHandler = () => {
                        // background-color: thistle; 
                         display: grid; 
                         grid-template-columns: auto; 
-                        grid-template-rows: auto; 
                     } 
                     
 {/*     

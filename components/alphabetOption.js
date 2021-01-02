@@ -92,7 +92,15 @@ class AlphabetOption extends Component {
                         padding: 0 3rem; 
                         border-radius: 25px; 
                     }
-                } 
+                }  
+
+                @media only screen and (max-height: 600px){ 
+                    .large { 
+                        font-size: 8rem; 
+                        padding: 0 3rem; 
+                        border-radius: 25px; 
+                    }
+                }
             `} </style>
         </>
     )

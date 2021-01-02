@@ -33,8 +33,8 @@ const ScoreBoard = (props) => (
         <div className='container'>
             <div className="rightScore">{props.score.correct}</div>
             <CheckSVG />
-            <CrossSVG />
             <div className="wrongScore">{props.score.wrong}</div>
+            <CrossSVG />
         </div> 
         <style jsx>
             {`

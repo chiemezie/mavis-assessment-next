@@ -153,7 +153,7 @@ const LeftShelf = () => (
             }   
 
             .lshelf{ 
-                height: 12rem; 
+                height: 9rem; 
                 
                 display: flex; 
                 align-items:flex-end;  
