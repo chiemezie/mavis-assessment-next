@@ -1,7 +1,8 @@
 const Welcome = (props) => ( 
     <>
         <div className="welcome">
-            <div className="welcome__border"></div>
+        <h1>{props.header}</h1>
+            {/* <div className="welcome__border"></div>
             <div className="welcome__main">
                 <div className="rightRibbons">
                     <div className="badge-ribbon"></div>
@@ -15,16 +16,20 @@ const Welcome = (props) => (
                     <div className="badge-ribbon4"></div>
                 </div>
             </div>
-            <div className="welcome__border"></div>
+            <div className="welcome__border"></div> */}
         </div>
         <style jsx> {`
             .welcome{ 
-                width: 90%; 
-                display: grid; 
-                justify-items: center; 
-            } 
+                //  width: 90%; 
+               // display: grid; 
+              //justify-items: center; 
+              justify-self: start; 
+              color: #3b5998; 
+              font-size: 1.5rem; 
+              grid-column: col-start 2 / col-end 5; 
+            }  
 
-            .welcome__main{ 
+            {/* .welcome__main{ 
                 height: 6rem; 
                 background-color: #218E8A; 
                 display: grid; 
@@ -33,6 +38,7 @@ const Welcome = (props) => (
                 column-gap: 6rem; 
                 width: 90%; 
                 color: #fff; 
+               
             } 
 
             .welcome__main h1{ 
@@ -231,7 +237,7 @@ const Welcome = (props) => (
                     background-color: transparent; 
                     color: #fff; 
                 }
-            } 
+            }  */}
         `} </style>
     </>
     

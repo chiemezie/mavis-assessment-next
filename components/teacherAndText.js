@@ -6,7 +6,7 @@ const TeacherAndText = (props) => {
     <>
         <div className="container">
             <div className="teacherContainer">
-                <Teacher teacher={props.teacher} handleClick = {props.handleTeacherClick} /> 
+                <Teacher teacher={props.teacher} handleClick = {props.handleTeacherClick} type="board"/> 
             </div>
             
             <TextOnly>{props.children}</TextOnly>
@@ -15,13 +15,13 @@ const TeacherAndText = (props) => {
             .container{ 
                 display: grid; 
                 align-items: center; 
-                gap: 2rem; 
+                gap: 4rem; 
                 grid-template-columns: repeat(2, minmax(min-content, max-content)); 
             } 
             .teacherContainer{ 
                 width: 12rem; 
                 height: 12rem; 
-                display: ${props.sound?'block':'none'}
+                display: ${props.sound?'block':'none'};
             } 
 
             @media only screen and (max-width: 1200px){ 

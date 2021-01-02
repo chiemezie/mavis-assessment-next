@@ -43,7 +43,8 @@ class AlphabetOption extends Component {
                     visibility: ${this.props.show ? 'visible' : 'hidden'}; 
                     opacity: ${this.props.show ? 1 : 0}; 
                     transition: visibility .4s, opacity .4s ease-in-out; 
-                    cursor: pointer;  
+                    cursor: pointer; 
+                    max-width: 10rem;  
                 }  
     
                 .large{ 

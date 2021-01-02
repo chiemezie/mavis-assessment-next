@@ -9,9 +9,8 @@ const HelpIconSvg = props =>(
             {`
           
       .toggleSvg{ 
-           width: 4rem; 
-           height: 4rem;
-           fill: white; 
+           width: 3rem; 
+           height: 3rem;
       }  
 
       @media only screen and (max-width: 1200px){ 
@@ -49,9 +48,8 @@ const GameIconSvg = props =>(
             {`
           
       .toggleSvg{ 
-           width: 4rem; 
-           height: 4rem;
-           fill: white; 
+           width: 3rem; 
+           height: 3rem;
       }  
 
       @media only screen and (max-width: 1200px){ 
@@ -88,11 +86,12 @@ const ToggleIcon = (props) => (
 <style jsx> {`
     .toggle{ 
         border-radius: 50%; 
-        background: #218E8A; 
-        padding: 2rem; 
-        box-shadow: 0 1rem 2rem rgba(0,0,0, .3); 
-        font-size: 1.2rem; 
-        cursor: pointer; 
+        background: rgba(192,192,192, .4); 
+                padding: 1rem; 
+                //box-shadow: 0 1rem 2rem rgba(0,0,0, .3); 
+                font-size: 1.2rem; 
+                cursor: pointer; 
+                grid-column: col-start 7 / col-end 7;  
         
     }  
     @media only screen and (max-width: 1000px){ 

@@ -8,9 +8,8 @@ const HomeIconSvg = props =>(
             {`
           
       .homeSvg{ 
-           width: 4rem; 
-           height: 4rem;
-           fill: white; 
+           width: 3rem; 
+           height: 3rem;
       }  
 
       @media only screen and (max-width: 1200px){ 
@@ -47,14 +46,16 @@ const MenuIcon = () => (
         <style jsx> {`
             .menu{ 
                 border-radius: 50%; 
-                background: #218E8A; 
-                padding: 1.5rem; 
-                box-shadow: 0 1rem 2rem rgba(0,0,0, .3); 
+              //  background: #218E8A; 
+                background: rgba(192,192,192, .2); 
+                padding: 1rem; 
+                //box-shadow: 0 1rem 2rem rgba(0,0,0, .3); 
                 font-size: 1.2rem; 
                 cursor: pointer; 
+                grid-column: col-start 1/col-end ; 
                 
             }  
-            @media only screen and (max-width: 1000px){ 
+            {/* @media only screen and (max-width: 1000px){ 
                   .menu{ 
                      padding: 1.2rem;
                   }
@@ -67,7 +68,7 @@ const MenuIcon = () => (
                     padding: .8; 
                 }
                
-            }  
+            }   */}
         `} </style>
     </>
 ) ; 

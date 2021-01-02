@@ -10,6 +10,7 @@ import ToggleIcon from '../components/gameToggleIcon';
 import BalloonCountdown from '../components/ballooncountdown'; 
 import Board from '../components/greenboard';
 import LeftShelf from '../components/leftShelf';
+import ScoreBoard from '../components/scoreboard'; 
 import RightShelf from '../components/rightShelf'; 
 import BottomShelf from '../components/bottomShelf'; 
 import AnswerBox from '../components/answerbox'; 
@@ -1351,6 +1352,8 @@ const toggleIconHandler = () => {
              if(value){   
               dispatchHelpStage({type: 'SET', num:0});  
               setMode('help');
+              dispatchGameStage({type: 'SET', num:0}); 
+              setBoardMode('default'); 
              } 
              else{ 
                  // continue the game that was paused
@@ -1372,115 +1375,90 @@ const toggleIconHandler = () => {
                     <title>Mavis Assessment Test</title>
                     <link rel="icon" href="/favicon.ico" />
                 </Head>
-                <div className="teacherContainer">
-                    <Teacher teacher={teacherState} handleClick={teacherClickHandler} />
-                </div> 
-                <div className="refreshContainer">
-                    <RefreshIcon clicked = {refreshHandler}/> 
-                    <ToggleIcon mode={mode} clicked = {toggleIconHandler}/>
-                </div>
                 <div className="headerContainer">
-                    <Welcome header={"The Alphabet"}/> 
+                    <MenuIcon />
+                    <Welcome header={"The Alphabet"} />
+                    <RefreshIcon clicked={refreshHandler} />
+                    <ToggleIcon mode={mode} clicked={toggleIconHandler} />
+                    <ScoreBoard score={scoreState}/>
+                </div>
+                <div className="sidebar">
+                    <Teacher teacher={teacherState} handleClick={teacherClickHandler} type="main" />
+                    <div className="clockContainer">
+                        {timerMode === 'countdown' ? <BalloonCountdown continued={countdownState.continue} finished={finishedHandler} ended={countdownState.ended} reset={countdownState.reset} /> : <Clock />}
+                    </div>
+                    <LeftShelf />
+                </div>
+                <div className="mainSection">
+                    <Board content={boardContentState}
+                        selected={selectedState}
+                        opglow={boardOptionsGlow}
+                        boardTeachers={boardTeacherState}
+                        handleClick={boardOptionClick}
+                        handleTeacherClick={boardTeacherClickHandler}
+                        submit={submitState}
+                        handleSubmitClicked={submitHandler}
+                        mode={boardMode}
+                        score={scoreState}
+                        stageNum={gameStage}
+                        correctPop={correctPop}
+                        wrongPop={wrongPop}
+                    />
                 </div> 
-
-                <div className="hamburger">
-                    <MenuIcon /> 
-                </div> 
-                <div className="clockContainer">
-                    {timerMode === 'countdown' ? <BalloonCountdown continued={countdownState.continue} finished={finishedHandler} ended={countdownState.ended} reset = {countdownState.reset}/> : <Clock />  } 
-                </div> 
-                <Board content= {boardContentState}
-                    selected = {selectedState}
-                    opglow = {boardOptionsGlow}
-                    boardTeachers = {boardTeacherState}
-                    handleClick = {boardOptionClick} 
-                    handleTeacherClick = {boardTeacherClickHandler}
-                    submit={submitState}
-                    handleSubmitClicked = {submitHandler}
-                    mode={boardMode} 
-                    score={scoreState}
-                    stageNum = {gameStage}
-                    correctPop = {correctPop} 
-                    wrongPop = {wrongPop}
-                />
-                <LeftShelf />
-                <RightShelf /> 
                 <div className="optionsContainer">
-                <AnswerBox options={alphabetOptionsState} glow={optionsGlow} handleClick={optionClick} /> 
+                        <AnswerBox options={alphabetOptionsState} glow={optionsGlow} handleClick={optionClick} />
                 </div>
-                <div className="bottomShelfContainer">
-                    <BottomShelf />
-                </div>
-
                 <style jsx>{`
                     .container{ 
-                       // max-width:120rem; 
-                       // margin: 8rem auto; 
-                        background-color: ${mode==='help' ? '#f5b799' : '#FFF683'}; 
-                       // background-color: white; 
+                        //background-color: ${mode==='help' ? '#f5b799' : '#FFF683'}; 
+                        background-color: ${mode==='help' ? '#ffdb99' : '#cc00cc'};
                         display: grid; 
-                        grid-template-columns: repeat(8, 1fr);
-                        grid-template-rows: repeat(20, 5vh); 
+                        grid-template-rows: 6rem 80vh min-content; 
+                        grid-template-columns: [full-start] 1fr [center-start] repeat(12, [col-start] minmax(min-content, 14rem) [col-end]) [center-end] 1fr [full-end]; 
                         transition: background-color 1.5s ;   
-                    } 
-    
-                    .teacherContainer{ 
-                        display: grid; 
-                        align-items: center; 
-                        justify-items: center; 
-                        grid-row: 1/6; 
-                        grid-column: 1/2; 
-                    } 
-
-                    .refreshContainer{ 
-                        display: grid; 
-                        align-items: center; 
-                        justify-items: center; 
-                        grid-row:6/8; 
-                        grid-column: 1/2;  
-                        grid-template-columns: repeat(2, 1fr); 
-                    }
-
+                    }  
                     .headerContainer{ 
+                        grid-row: 1/2;   
+                        grid-column:full-start/full-end; 
+                        display: grid;  
+                        grid-template-columns: [full-start] 1fr [center-start] repeat(12, [col-start] minmax(min-content, 14rem) [col-end]) [center-end] 1fr [full-end]; 
+                        justify-items: center;
+                        align-items: center; 
+                        border-bottom: 1px solid rgb(229, 228, 226) ; 
+                        background-color: ${mode==='help' ? '#ffedcc' : '#ff99ff'};
+                    }  
+                    .sidebar{ 
+                        grid-row: 2/4; 
+                        grid-column: col-start 1/ col-end 2; 
                         display: grid; 
-                        justify-items: center; 
-                        align-content: center; 
-                        grid-row: 1/4; 
-                        grid-column: 2/8; 
+                        grid-template-columns: 1fr; 
+                        grid-template-rows: min-content min-content 1fr; 
+                        justify-items: start; 
+                        align-items: start;   
+                        border-bottom: 1px solid rgb(229, 228, 226) ;
+                    } 
+                    .mainSection{ 
+                        margin-top: 4px; 
+                        grid-row: 2/3; 
+                        grid-column: col-start 3/ col-end 10; 
                     } 
 
-                    .hamburger{ 
-                        grid-row: 1/3; 
-                        grid-column: 8/9; 
-                        align-self: center; 
-                        justify-self: end; 
-                        margin-right: 20px; 
-                        
-                    } 
-
+                    
                     .clockContainer{ 
-                        grid-row: 3/6; 
-                        grid-column: 8/9;
-                        display: grid;
-                        align-content: center; 
-                        justify-content: center;
-                        margin-top: 15px; 
-                    } 
-
+                           justify-self: center;  
+                           
+                        }  
                     .optionsContainer{ 
-                        background-color: gainsboro; 
-                        grid-row: 16/19; 
-                        grid-column: 2/8;
-                        padding-top: 1rem; 
-                        padding-left: 1rem; 
+                        grid-column: col-start 3/ col-end 10;  
+                        grid-row: 3/-1; 
+                       // background-color: thistle; 
+                        display: grid; 
+                        grid-template-columns: auto; 
+                        grid-template-rows: auto; 
                     } 
-
-                    .bottomShelfContainer{ 
-                        background-color: gainsboro; 
-                        border-top: 1rem solid  #D07026; 
-                        grid-column: 1/-1; 
-                        grid-row: 19/21; 
-                    } 
+                    
+{/*     
+                    
 
                     @media only screen and (max-width: 1350px){ 
                         .refreshContainer{ 
@@ -1532,9 +1510,6 @@ const toggleIconHandler = () => {
                             column-gap: 15px; 
                         }
 
-                        .clockContainer{ 
-                            grid-row: 3/5; 
-                        } 
 
                         .optionsContainer{ 
                             grid-column: 1/-1; 
@@ -1553,7 +1528,7 @@ const toggleIconHandler = () => {
                         .container{ 
                             grid-template-rows: none; 
                         } 
-                    } 
+                    }  */}
                 `}</style>
             </div>
         );

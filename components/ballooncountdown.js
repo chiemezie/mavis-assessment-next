@@ -62,6 +62,7 @@ const BalloonCountdown = (props) => {
           font-size: 6vw; 
           font-family: 'Kalam', cursive;
           font-weight: bold; 
+          transform: translateY(-3rem); 
           
         }  
         

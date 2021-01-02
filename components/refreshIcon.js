@@ -9,9 +9,8 @@ const RefreshIconSvg = props =>(
                     {`
                   
               .refreshSvg{ 
-                   width: 4rem; 
-                   height: 4rem;
-                   fill: white; 
+                   width: 3rem; 
+                   height: 3rem; 
               }  
 
               @media only screen and (max-width: 1200px){ 
@@ -48,14 +47,15 @@ const RefreshIcon = (props) => (
         <style jsx> {`
             .refresh{ 
                 border-radius: 50%; 
-                background: #218E8A; 
-                padding: 2rem; 
-                box-shadow: 0 1rem 2rem rgba(0,0,0, .3); 
+                background: rgba(192,192,192, .4); 
+                padding: 1rem; 
+                //box-shadow: 0 1rem 2rem rgba(0,0,0, .3); 
                 font-size: 1.2rem; 
                 cursor: pointer; 
+                grid-column: col-start 6/ col-end 6;  
                 
             }  
-            @media only screen and (max-width: 1000px){ 
+            {/* @media only screen and (max-width: 1000px){ 
                   .refresh{ 
                      padding: 1.5rem;
                   }
@@ -68,7 +68,7 @@ const RefreshIcon = (props) => (
                     padding: 1; 
                 }
                
-            }  
+            }   */}
         `} </style>
     </>
 ) ; 

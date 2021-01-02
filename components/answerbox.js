@@ -16,33 +16,39 @@ const AnswerBox = (props) => {
     return( 
     <>
             <div className="main">
-                <div className="optionsContainer" >   
-                    {options}
-                </div>
-                
+            <div className="options">
+            {options}
             </div>
-            <style jsx> {`
+           
+            </div>
+            <style jsx> {` 
+
+            h1{ 
+                color: LightSlateGray; 
+                justify-self: center; 
+            }
             .main{ 
                 display: grid; 
-                align-items: center;
-                 
-            } 
-            
-            
-            .optionsContainer { 
-                list-style: none;
+            }
+            .options{ 
                 display: grid; 
-                grid-template-columns: repeat(4, 1fr);
-                justify-content: space-around; 
+                list-style:none; 
+                gap: 1rem; 
+                margin: .5rem; 
+                align-items: start; 
                 justify-items: center; 
-            }  
+                grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); 
+            }
+            
+            
+            
 
-            @media only screen and (max-width: 700px){ 
+            {/* @media only screen and (max-width: 700px){ 
                 .optionsContainer{ 
                     justify-content: center; 
                     
                 }
-            }
+            } */}
 
            
     `} </style>

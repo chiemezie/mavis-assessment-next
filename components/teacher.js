@@ -15,14 +15,16 @@ const Teacher = (props) => {
             <div className='hiddenLoader'></div>
             <style jsx> {`
                 .main{
-                    width: 100% ;
-                    height: 100%;  
-                    background: no-repeat center/80% url("teacher1.svg");
+                    width: ${props.type ==='main' ? '20rem' : '12rem'} ;
+                    height: ${props.type ==='main' ? '20rem' : '12rem'} ; 
+                    background: no-repeat center/100% url("teacher1.svg");
                     cursor: pointer;  
+                    grid-column: 1/5; 
+                    justify-self: center;
                 } 
                 .hiddenLoader{ 
                     display: none; 
-                    background: no-repeat center/80% url("teacher1.svg");
+                    background: no-repeat center/100% url("teacher1.svg");
                 } 
     
                 .talk{ 
@@ -35,24 +37,24 @@ const Teacher = (props) => {
     
                 @keyframes talk{ 
                     0% { 
-                     background: no-repeat center/80% url("teacher1.svg");
+                     background: no-repeat center/100% url("teacher1.svg");
                     }
     
                     30% { 
-                        background: no-repeat center/80% url("teacher2.svg");
+                        background: no-repeat center/100% url("teacher2.svg");
                     } 
                     100%{ 
-                        background: no-repeat center/80% url("teacher1.svg");
+                        background: no-repeat center/100% url("teacher1.svg");
                     }
                 } 
 
                 @keyframes glow{ 
                     0% { 
-                        transform: scale(1); 
+                        transform:  scale(1); 
                     } 
 
                     50% { 
-                        transform: scale(.9);
+                        transform:scale(.9);
                     }
 
                     100% { 
@@ -81,4 +83,4 @@ const Teacher = (props) => {
     );
 }  
 
-export default Teacher; 
+export default Teacher;  

@@ -144,18 +144,24 @@ const LeftShelf = () => (
                 box-shadow: inset 0 0 20px 20px #1b0c07; 
                 border-top: 10px solid #8a3e1c;
                 border-right: 10px solid #8a3e1c; 
+                border-left: 10px solid #8a3e1c; 
                 background-color: #3f2212; 
-                padding: 0 10px;
-                grid-row: 10/19; 
-                grid-column: 1/2;
-            }  
+                padding: 0 10px; 
+                grid-column: 1/5;
+                justify-self: center; 
+                align-self: end; 
+            }   
 
             .lshelf{ 
-                height: 8.5rem; 
-                border-bottom: 1rem solid #8a3e1c;
+                height: 12rem; 
+                
                 display: flex; 
                 align-items:flex-end;  
-            } 
+            }  
+
+            .lshelf :not(:last-child){ 
+                border-bottom: 1rem solid #8a3e1c;
+            }
 
 
             .lbook1{ 

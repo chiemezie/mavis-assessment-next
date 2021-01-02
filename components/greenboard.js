@@ -1,5 +1,4 @@
 import TeacherAndText from './teacherAndText'; 
-import ScoreBoard from './scoreboard'; 
 import SubmitLock from './submitlock'; 
 import AlphabetOption from './alphabetOption'; 
 import {TransitionGroup, Transition } from 'react-transition-group'; 
@@ -230,9 +229,6 @@ const Board = (props) => {
     <>
         <div className="board">
             {props.stageNum===5 ? gameOver : null}
-            <div className="scoreBoardContainer">
-                {props.score.show? <ScoreBoard score={props.score}/> : null}
-            </div> 
             <div className="mainBoardContainer">
                     <TransitionGroup component={null}>
                         {props.content ? props.content.map((cont, index) => (
@@ -268,13 +264,14 @@ const Board = (props) => {
            
             .board{ 
                 background-color:  ${boardColor}; 
-                grid-row: 4/16; 
-                grid-column: 2/8; 
-                border-width: 1.4rem; 
-                border-style: ridge; 
-                border-width: 1.4rem; 
+                width: 100%; 
+                height: 100%; 
+                //grid-row: 4/16; 
+                //grid-column: 2/8; 
+                border-width: .8rem; 
+                border-style: ridge;  
                 display: grid;   
-                grid-template-rows: ${props.stageNum===5 ? '1fr' : '1rem 1fr 1rem'}; 
+                grid-template-rows: ${props.stageNum===5 ? '1fr' : 'auto'}; 
                 grid-template-columns: ${props.stageNum===5 ? '1fr' : 'auto'}; 
                 padding: ${props.stageNum=== 5? '5% 0' : '2rem'}; 
                 transition: background-color .6s ;
@@ -325,7 +322,7 @@ const Board = (props) => {
             .submitContianer{ 
                 justify-self: center; 
             }
-            @media only screen and (max-width: 900px){ 
+            {/* @media only screen and (max-width: 900px){ 
                
             } 
 
@@ -347,7 +344,7 @@ const Board = (props) => {
                     grid-column: 1/-1; 
                     grid-row-start: 7; 
                 }
-            } 
+            }  */}
 
         `} </style>
     </>
