@@ -58,6 +58,7 @@ class AlphabetOption extends Component {
                     text-transform: uppercase;
                     cursor: pointer; 
                 }
+                
     
                 .glow { 
                         animation: glow 1.7s infinite; 
@@ -75,24 +76,25 @@ class AlphabetOption extends Component {
                             transform: scale(1); 
                         } 
     
-                    }
-    
-                .big{ 
-                    background-color : ${this.props.color}; 
                 } 
-                
-                
+
                 @media only screen and (max-width: 800px){ 
                     .small{ 
                         font-size: 5rem; 
-                        padding: .8rem 2rem; 
-                    } 
+                    }
                     .large{ 
-                        font-size: 10rem; 
-                        padding: 0 3rem; 
-                        border-radius: 25px; 
+                        font-size: 12rem; 
                     }
                 }  
+
+                @media only screen and (max-width: 500px){ 
+                    .small{ 
+                        font-size: 4rem; 
+                        font-weight: 500; 
+                        padding: .6rem 2rem; 
+                        border-radius: 15px; 
+                    }
+                }
 
                 @media only screen and (max-height: 600px){ 
                     .large { 
@@ -100,7 +102,7 @@ class AlphabetOption extends Component {
                         padding: 0 3rem; 
                         border-radius: 25px; 
                     }
-                }
+                } 
             `} </style>
         </>
     )

@@ -20,17 +20,17 @@ const RefreshIconSvg = props =>(
                   }
               }
 
-              @media only screen and (max-width: 900px){ 
+              @media only screen and (max-width: 800px){ 
                   .refreshSvg{ 
-                      width: 2.5rem; 
-                      height: 2.5rem; 
+                      width: 2rem; 
+                      height: 2rem; 
                   }
               } 
 
               @media only screen and (max-width: 600px){ 
                 .refreshSvg{ 
-                    width: 2rem; 
-                    height: 2rem; 
+                    width: 1.5rem; 
+                    height: 1.5rem; 
                 }
               }
               `}
@@ -55,20 +55,14 @@ const RefreshIcon = (props) => (
                 grid-column: col-start 6/ col-end 6;  
                 
             }  
-            {/* @media only screen and (max-width: 1000px){ 
-                  .refresh{ 
-                     padding: 1.5rem;
-                  }
-              }
-
-            
-
-            @media only screen and (max-width: 600px){ 
+            @media only screen and (max-width: 450px){ 
                 .refresh{ 
-                    padding: 1; 
+                   grid-row: 2/3; 
+                   grid-column: col-start 1 /col-end 2; 
+                   justify-self: start; 
                 }
                
-            }   */}
+            }   
         `} </style>
     </>
 ) ; 

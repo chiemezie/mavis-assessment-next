@@ -512,7 +512,7 @@ const LeftShelf = () => (
                 }
             }
 
-            @media only screen and (max-width: 600px){ 
+            @media only screen and (max-width: 800px){ 
                 .leftShelf{ 
                     display: none; 
                 }

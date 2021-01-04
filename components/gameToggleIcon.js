@@ -20,17 +20,17 @@ const HelpIconSvg = props =>(
           }
       }
 
-      @media only screen and (max-width: 900px){ 
+      @media only screen and (max-width: 800px){ 
           .toggleSvg{ 
-              width: 2.5rem; 
-              height: 2.5rem; 
+              width: 2rem; 
+              height: 2rem; 
           }
       } 
 
       @media only screen and (max-width: 600px){ 
         .toggleSvg{ 
-            width: 2rem; 
-            height: 2rem; 
+            width: 1.5rem; 
+            height: 1.5rem; 
         }
       }
       `}
@@ -59,17 +59,17 @@ const GameIconSvg = props =>(
           }
       }
 
-      @media only screen and (max-width: 900px){ 
+      @media only screen and (max-width: 800px){ 
           .toggleSvg{ 
-              width: 2.5rem; 
-              height: 2.5rem; 
+              width: 2rem; 
+              height: 2rem; 
           }
       } 
 
       @media only screen and (max-width: 600px){ 
         .toggleSvg{ 
-            width: 2rem; 
-            height: 2rem; 
+            width: 1.5rem; 
+            height: 1.5rem; 
         }
       }
       `}
@@ -87,24 +87,18 @@ const ToggleIcon = (props) => (
     .toggle{ 
         border-radius: 50%; 
         background: rgba(192,192,192, .4); 
-                padding: 1rem; 
-                //box-shadow: 0 1rem 2rem rgba(0,0,0, .3); 
+                padding: 1rem;
                 font-size: 1.2rem; 
                 cursor: pointer; 
                 grid-column: col-start 7 / col-end 7;  
         
     }  
-    @media only screen and (max-width: 1000px){ 
-          .toggle{ 
-             padding: 1.5rem;
-          }
-      }
- 
-    
-
-    @media only screen and (max-width: 600px){ 
+    @media only screen and (max-width: 450px){ 
         .toggle{ 
-            padding: 1; 
+            grid-row: 2/3; 
+            grid-column: col-start 3/ col-end 4; 
+            align-self: center;
+            justify-self: start;  
         }
        
     }  

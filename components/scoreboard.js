@@ -8,6 +8,13 @@ const CheckSVG = props => (
                 width: 1.5rem; 
                 height: 1.5rem; 
                 margin-right: 1.4rem; 
+            } 
+            @media only screen and (max-width: 600px){ 
+                .checksvg{ 
+                    width: 1.2rem; 
+                height: 1.2rem;
+                }
+                 
             }
         `} </style>
     </>
@@ -22,6 +29,13 @@ const CrossSVG = props => (
             .crosssvg{ 
                 width: 1.5rem; 
                 height: 1.5rem;  
+            } 
+            @media only screen and (max-width: 600px){ 
+                .crosssvg{ 
+                    width: 1.2rem; 
+                height: 1.2rem; 
+                }
+              
             }
         `} </style>
 
@@ -55,7 +69,27 @@ const ScoreBoard = (props) => (
                     background-color:  rgba(192,192,192, .4); 
                     padding: 0 1.2rem; 
                     border-radius: 50%; 
-                    vertical-align: start;   
+                    vertical-align: start; }   
+
+                @media only screen and (max-width: 600px){ 
+                    .container{ 
+                        font-size: 3rem; 
+                        font-weight: 500; 
+                    } 
+                    .rightScore { 
+                        padding: 0 1rem; 
+                    } 
+                    .wrongScore { 
+                        padding: 0 1rem; 
+                    }
+                } 
+
+                @media only screen and (max-width: 450px){ 
+                    .container{ 
+                        grid-row: 2/3; 
+                        grid-column: col-start 5/ col-end 8; 
+                    }
+                }
             `}
         </style>
     </>

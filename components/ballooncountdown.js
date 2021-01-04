@@ -53,7 +53,6 @@ const BalloonCountdown = (props) => {
           border-radius:80%;
           position:relative;
           box-shadow:inset -10px -10px 0 rgba(0,0,0,0.07);
-          margin-top: 20%;  
           
           z-index:10;
           
@@ -98,6 +97,16 @@ const BalloonCountdown = (props) => {
             bottom: -52%;
         }  
     }   
+
+    @media only screen and (max-width: 800px){ 
+        .balloon{ 
+            width: 10vw; 
+            height: 13vw 
+        } 
+        .balloon:after{ 
+            bottom: -56%; 
+        }
+    } 
 
     @media only screen and (max-width: 600px){ 
         .balloon{ 

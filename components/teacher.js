@@ -12,19 +12,13 @@ const Teacher = (props) => {
         <>
             
             <div className={classes.join(' ')} onClick={props.handleClick}></div>
-            <div className='hiddenLoader'></div>
             <style jsx> {`
                 .main{
                     width: ${props.type ==='main' ? '20rem' : '12rem'} ;
                     height: ${props.type ==='main' ? '20rem' : '12rem'} ; 
-                    background: no-repeat center/100% url("teacher1.svg");
+                   background: no-repeat center/100% url("teacher1.svg");
                     cursor: pointer;  
-                    grid-column: 1/5; 
-                    justify-self: center;
-                } 
-                .hiddenLoader{ 
-                    display: none; 
-                    background: no-repeat center/100% url("teacher1.svg");
+                  //  transform: ${props.type==='main' ? 'translateY(-4rem)' : null}
                 } 
     
                 .talk{ 
@@ -41,10 +35,11 @@ const Teacher = (props) => {
                     }
     
                     30% { 
-                        background: no-repeat center/100% url("teacher2.svg");
+                      background: no-repeat center/100% url("teacher2.svg");
+                      
                     } 
                     100%{ 
-                        background: no-repeat center/100% url("teacher1.svg");
+                      background: no-repeat center/100% url("teacher1.svg");
                     }
                 } 
 
@@ -61,21 +56,21 @@ const Teacher = (props) => {
                         transform: scale(1); 
                     } 
 
-                }
-                {/* width: 80%; 
-                 
-                @media only screen and (max-width: 900px){ 
-                    .teacher__icon{ 
-                        width: 10rem; 
+                } 
+                @media only screen and (max-width: 800px){ 
+                    .main{ 
+                        width: ${props.type ==='main' ? '10rem' : '8rem'} ;
+                        height: ${props.type ==='main' ? '10rem' : '8rem'} ;
+                      
                     }
-                  
-                }
-    
-                @media only screen and (max-width: 400px){ 
-                    .teacher__icon{ 
-                        width: 6rem; 
+                } 
+
+                @media only screen and (max-width: 450px){ 
+                    .main{ 
+                        width: 8rem; 
+                        height: 8rem; 
                     }
-                } */}
+                }
     
             `} </style>
         </>

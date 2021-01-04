@@ -87,6 +87,7 @@ const    clock = () => {
                         .clock{ 
                             width: 10rem; 
                             height: 6.67rem; 
+                            margin-top: 0; 
                         }
                         .clock__main{ 
                             font-size: 2.78rem; 

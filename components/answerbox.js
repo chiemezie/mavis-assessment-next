@@ -23,10 +23,6 @@ const AnswerBox = (props) => {
             </div>
             <style jsx> {` 
 
-            h1{ 
-                color: LightSlateGray; 
-                justify-self: center; 
-            }
             .main{ 
                 display: grid; 
             }
@@ -40,8 +36,20 @@ const AnswerBox = (props) => {
                 grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); 
             }
             
+            @media only screen and (max-width: 800px){ 
+                .options{ 
+                    grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr)); 
+                     gap: .5rem; 
+                }
+                
+            }
             
-            
+            @media only screen and (max-width: 450px){ 
+               .options{ 
+                grid-template-columns: repeat(auto-fit, minmax(5rem, 1fr)); 
+                     gap: .3rem; 
+               }
+            }
 
             {/* @media only screen and (max-width: 700px){ 
                 .optionsContainer{ 
