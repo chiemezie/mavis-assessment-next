@@ -1,5 +1,5 @@
 
-import { useContext, useReducer, useState, useEffect, useCallback } from "react"; 
+import { Component, useReducer, useState, useEffect, useCallback } from "react"; 
 import Head from 'next/head'; 
 import Teacher from '../components/teacher'; 
 import Welcome from '../components/welcome'; 
@@ -12,15 +12,13 @@ import BalloonCountdown from '../components/ballooncountdown';
 import Board from '../components/greenboard';
 import LeftShelf from '../components/leftShelf';
 import ScoreBoard from '../components/scoreboard'; 
-import AnswerBox from '../components/answerbox';  
+import RightShelf from '../components/rightShelf'; 
+import BottomShelf from '../components/bottomShelf'; 
+import AnswerBox from '../components/answerbox'; 
+import ReactHowler from 'react-howler'; 
 import {updateObject } from '../shared/utility';  
 import swal from 'sweetalert'; 
 import { Howl } from "howler";
-import Auth from '../components/Auth'; 
-import { AuthContext } from '../context/auth-context';
-import styled from "styled-components";
-import {theme} from '../styles/index'; 
-
 
 const helpStageReducer = (state,action) => { 
     // round off the state 
@@ -443,12 +441,7 @@ const [lastClicked, setLastClicked] = useState();
 const [finishedLoadingGameSounds, setFinishedLoadingGameSounds] = useState(false); 
 const [correctScore, dispatchCorrectScore] = useReducer(correctScoresReducer, []); 
 const [wrongScore, dispatchWrongScore] = useReducer(wrongScoresReducer, []); 
-const [currentPlaying, setCurrentPlaying] = useState(null);  
-
-const Title = styled.h1`
-  font-size: 1.5rem;
-  color: ${theme.colors.dark};
-`;
+const [currentPlaying, setCurrentPlaying] = useState(null); 
 
 const refreshHandler = () => { 
     if(mode==='game'){ 
@@ -1370,169 +1363,160 @@ const toggleIconHandler = () => {
           
          }); 
     }
-} 
-const authContext = useContext(AuthContext);
-let content = <Auth />   
-// ordinarily should show content only if authContect.isAuth change this when working on the final one. 
-if(!authContext.isAuth) { 
-    content = (
-        <>
-        <div className="container">
-            <Head>
-                <title>Mavis Assessment Test</title>
-                <link rel="icon" href="/favicon.ico" />
-            </Head>
-            <div className="headerContainer">
-                {/* <MenuIcon /> */}
-                <LogoIcon /> 
-                <Welcome header={"The Alphabet"} />
-                <RefreshIcon clicked={refreshHandler} />
-                <ToggleIcon mode={mode} clicked={toggleIconHandler} />
-                <ScoreBoard score={scoreState}/>
-            </div>
-            <div className="sidebar">
-                <div className='teacherContainer'> <Teacher teacher={teacherState} handleClick={teacherClickHandler} type="main" /></div>
-                <div className="clockContainer">
-                    {timerMode === 'countdown' ? <BalloonCountdown continued={countdownState.continue} finished={finishedHandler} ended={countdownState.ended} reset={countdownState.reset} /> : <Clock />}
-                </div>
-                <LeftShelf />
-            </div>
-            <div className="mainSection">
-                <Board content={boardContentState}
-                    selected={selectedState}
-                    opglow={boardOptionsGlow}
-                    boardTeachers={boardTeacherState}
-                    handleClick={boardOptionClick}
-                    handleTeacherClick={boardTeacherClickHandler}
-                    submit={submitState}
-                    handleSubmitClicked={submitHandler}
-                    mode={boardMode}
-                    score={scoreState}
-                    stageNum={gameStage}
-                    correctPop={correctPop}
-                    wrongPop={wrongPop}
-                />
-            </div> 
-            <div className="optionsContainer">
-                    <AnswerBox options={alphabetOptionsState} glow={optionsGlow} handleClick={optionClick} />
-            </div>
-        </div>
-            <style jsx>{`
-                .container{ 
-                 
-                    background-color: ${mode==='help' ? '#ffdb99' : 'rgba(207, 217, 30, .7)'};
-                    display: grid; 
-                    grid-template-rows: 6rem 80vh minmax(14vh, min-content); 
-                    grid-template-columns: [full-start] 1fr [center-start] repeat(12, [col-start] minmax(min-content, 14rem) [col-end]) [center-end] 1fr [full-end]; 
-                    transition: background-color 1.5s ;   
-                }  
-                .headerContainer{ 
-                    grid-row: 1/2;   
-                    grid-column:full-start/full-end; 
-                    display: grid;  
-                    grid-template-columns: [full-start] 1fr [center-start] repeat(12, [col-start] minmax(min-content, 14rem) [col-end]) [center-end] 1fr [full-end]; 
-                    justify-items: center;
-                    align-items: center; 
-                    border-bottom: 1px solid rgb(229, 228, 226) ; 
-                    background-color: ${mode==='help' ? '#ffedcc' : '#eff3a5'};
-                }  
-               
-                .sidebar{ 
-                    grid-row: 2/-1; 
-                    grid-column: col-start 1/ col-end 2; 
-                    display: grid; 
-                    grid-template-columns: 1fr;  
-                    grid-template-rows: auto; 
-                    justify-content: center;
-                    justify-items: center;  
-                    align-items: center;  
-                    background-color: orangered;  
-                    
-                }  
-                
-                .mainSection{ 
-                    margin-top: 4px; 
-                    grid-row: 2/3; 
-                    grid-column: col-start 3/ col-end 10; 
-                } 
-                .teacherContainer{ 
-                    align-self: start; 
-                }
-    
-                
-                .clockContainer{ 
-                     grid-column: 1/-1;  
-                }  
-                .optionsContainer{ 
-                    grid-column: col-start 3/ col-end 10;  
-                    grid-row: 3/-1; 
-                    display: grid; 
-                    grid-template-columns: auto; 
-                }  
-    
-                @media only screen and (max-width: 800px){ 
-                    .container{ 
-                        background-color: thistle; 
-                        grid-template-rows: 6rem 10rem 68vh minmax(10vh, min-content); 
-                    }  
-                    
-                    .sidebar { 
-                        grid-row: 2/3; 
-                        grid-column: col-start 1/ col-end 12; 
-                        grid-template-columns: 1fr 1fr 0fr;
-                        justify-items: center; 
-                        align-items: center; 
-                     
-                    }  
-                    .clockContainer{ 
-                        grid-column: 2/3;
-                    }
-                    .mainSection{ 
-                        grid-row: 3/4; 
-                        grid-column: col-start 1/ col-end 12; 
-                    } 
-    
-                    .optionsContainer{ 
-                        
-                        grid-column: col-start 1 / col-end 12; 
-                        grid-row: 4/-1; 
-                    }
-                } 
-    
-                @media only screen and (max-width: 450px){ 
-                    .container{ 
-                        grid-template-rows: 5rem 5rem 8rem 65vh minmax(8vh, min-content);
-                    } 
-                    .headerContainer{ 
-                        grid-row: 1/3; 
-                        grid-template-rows: 1fr 1fr; 
-                    } 
-                    .sidebar{ 
-                        grid-row: 3/4; 
-                    } 
-                    .mainSection{ 
-                        grid-row: 4/5; 
-                    } 
-                    .optionsContainer{ 
-                        grid-row: 5/-1; 
-                    }
-                    
-                }
-    
-            `}</style>
-        </>
-    
-    );
-    
 }
-
 
 
 
 
 // // end correct and wrong methods ///////////
        
-        return content; 
+        return (
+            <div className="container">
+                <Head>
+                    <title>Mavis Assessment Test</title>
+                    <link rel="icon" href="/favicon.ico" />
+                </Head>
+                <div className="headerContainer">
+                    {/* <MenuIcon /> */}
+                    <LogoIcon /> 
+                    <Welcome header={"The Alphabet"} />
+                    <RefreshIcon clicked={refreshHandler} />
+                    <ToggleIcon mode={mode} clicked={toggleIconHandler} />
+                    <ScoreBoard score={scoreState}/>
+                </div>
+                <div className="sidebar">
+                    <div className='teacherContainer'> <Teacher teacher={teacherState} handleClick={teacherClickHandler} type="main" /></div>
+                    <div className="clockContainer">
+                        {timerMode === 'countdown' ? <BalloonCountdown continued={countdownState.continue} finished={finishedHandler} ended={countdownState.ended} reset={countdownState.reset} /> : <Clock />}
+                    </div>
+                    <LeftShelf />
+                </div>
+                <div className="mainSection">
+                    <Board content={boardContentState}
+                        selected={selectedState}
+                        opglow={boardOptionsGlow}
+                        boardTeachers={boardTeacherState}
+                        handleClick={boardOptionClick}
+                        handleTeacherClick={boardTeacherClickHandler}
+                        submit={submitState}
+                        handleSubmitClicked={submitHandler}
+                        mode={boardMode}
+                        score={scoreState}
+                        stageNum={gameStage}
+                        correctPop={correctPop}
+                        wrongPop={wrongPop}
+                    />
+                </div> 
+                <div className="optionsContainer">
+                        <AnswerBox options={alphabetOptionsState} glow={optionsGlow} handleClick={optionClick} />
+                </div>
+                <style jsx>{`
+                    .container{ 
+                        //background-color: ${mode==='help' ? '#f5b799' : '#FFF683'}; 
+                        background-color: ${mode==='help' ? '#ffdb99' : 'rgba(207, 217, 30, .7)'};
+                        display: grid; 
+                        grid-template-rows: 6rem 80vh minmax(14vh, min-content); 
+                        grid-template-columns: [full-start] 1fr [center-start] repeat(12, [col-start] minmax(min-content, 14rem) [col-end]) [center-end] 1fr [full-end]; 
+                        transition: background-color 1.5s ;   
+                    }  
+                    .headerContainer{ 
+                        grid-row: 1/2;   
+                        grid-column:full-start/full-end; 
+                        display: grid;  
+                        grid-template-columns: [full-start] 1fr [center-start] repeat(12, [col-start] minmax(min-content, 14rem) [col-end]) [center-end] 1fr [full-end]; 
+                        justify-items: center;
+                        align-items: center; 
+                        border-bottom: 1px solid rgb(229, 228, 226) ; 
+                        background-color: ${mode==='help' ? '#ffedcc' : '#eff3a5'};
+                    }  
+                    .teacherContainer{ 
+                       
+                    }
+                    .sidebar{ 
+                        grid-row: 2/-1; 
+                        grid-column: col-start 1/ col-end 2; 
+                        display: grid; 
+                        grid-template-columns: 1fr;  
+                        grid-template-rows: auto; 
+                        justify-content: center;
+                        justify-items: center;  
+                        align-items: center;   
+                        
+                    }  
+                    
+                    .mainSection{ 
+                        margin-top: 4px; 
+                        grid-row: 2/3; 
+                        grid-column: col-start 3/ col-end 10; 
+                    } 
+                    .teacherContainer{ 
+                        align-self: start; 
+                    }
+
+                    
+                    .clockContainer{ 
+                         grid-column: 1/-1;  
+                    }  
+                    .optionsContainer{ 
+                        grid-column: col-start 3/ col-end 10;  
+                        grid-row: 3/-1; 
+                       // background-color: thistle; 
+                        display: grid; 
+                        grid-template-columns: auto; 
+                    }  
+
+                    @media only screen and (max-width: 800px){ 
+                        .container{ 
+                            grid-template-rows: 6rem 10rem 68vh minmax(10vh, min-content); 
+                        }  
+                        
+                        .sidebar { 
+                            grid-row: 2/3; 
+                            grid-column: col-start 1/ col-end 12; 
+                            grid-template-columns: 1fr 1fr 0fr;
+                            justify-items: center; 
+                            align-items: center; 
+                         
+                        }  
+                        .clockContainer{ 
+                            grid-column: 2/3;
+                        }
+                        .mainSection{ 
+                            grid-row: 3/4; 
+                            grid-column: col-start 1/ col-end 12; 
+                        } 
+
+                        .optionsContainer{ 
+                            
+                            grid-column: col-start 1 / col-end 12; 
+                            grid-row: 4/-1; 
+                        }
+                    } 
+
+                    @media only screen and (max-width: 450px){ 
+                        .container{ 
+                            grid-template-rows: 5rem 5rem 8rem 65vh minmax(8vh, min-content);
+                        } 
+                        .headerContainer{ 
+                            grid-row: 1/3; 
+                            grid-template-rows: 1fr 1fr; 
+                        } 
+                        .sidebar{ 
+                            grid-row: 3/4; 
+                        } 
+                        .mainSection{ 
+                            grid-row: 4/5; 
+                        } 
+                        .optionsContainer{ 
+                            grid-row: 5/-1; 
+                        }
+                        
+                    }
+  
+                `}</style>
+            </div>
+        );
+
 
     }
 
