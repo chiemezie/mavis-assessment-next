@@ -1,5 +1,5 @@
 
-import { Component, useReducer, useState, useEffect, useCallback } from "react"; 
+import { useContext, useReducer, useState, useEffect, useCallback } from "react"; 
 import Head from 'next/head'; 
 import Teacher from '../components/teacher'; 
 import Welcome from '../components/welcome'; 
@@ -19,6 +19,9 @@ import ReactHowler from 'react-howler';
 import {updateObject } from '../shared/utility';  
 import swal from 'sweetalert'; 
 import { Howl } from "howler";
+import Auth from '../components/Auth'; 
+import { AuthContext } from '../context/auth-context'; 
+import styled, {keyframes, css} from 'styled-components'; 
 
 const helpStageReducer = (state,action) => { 
     // round off the state 
@@ -317,8 +320,110 @@ const currentQuestionReducer = (state,action) => {
         default: 
         throw new Error('Should not get here'); 
     }
-}
+} 
+//******************* THE STYLED COMPONENTS  */
+const StyledContainer = styled.div`
+     background-color : ${props => {
+         console.log('background color props mode is '+props.mode)
+        // props.mode==='help' ? '#ffdb99' : 'rgba(207, 217, 30, .7)'
+        return '#ffdb99'; 
+         }
+        };
+     display: grid; 
+     grid-template-rows: 6rem 80vh minmax(14vh, min-content); 
+     grid-template-columns: [full-start] 1fr [center-start] repeat(12, [col-start] minmax(min-content, 14rem) [col-end]) [center-end] 1fr [full-end];
+     transition: background-color 1.5s ;
+     @media only screen and (max-width: 800px) { 
+        grid-template-rows: 6rem 10rem 68vh minmax(10vh, min-content); 
+     } 
+     @media only screen and (max-width: 450px) { 
+        grid-template-rows: 5rem 5rem 8rem 65vh minmax(8vh, min-content); 
+     }
+` 
 
+const StyledHeaderContainer = styled.div`
+    grid-row: 1/2;   
+    grid-column:full-start/full-end; 
+    display: grid;  
+    grid-template-columns: [full-start] 1fr [center-start] repeat(12, [col-start] minmax(min-content, 14rem) [col-end]) [center-end] 1fr [full-end]; 
+    justify-items: center;
+    align-items: center; 
+    border-bottom: 1px solid rgb(229, 228, 226) ; 
+    background-color: ${props => props.mode==='help' ? '#ffedcc' : '#eff3a5'}; 
+
+    @media only screen and (max-width: 450px){ 
+        grid-row: 1/3; 
+        grid-template-rows: 1fr 1fr;
+    }
+`; 
+
+const StyledSidebar = styled.div`
+    grid-row: 2/-1; 
+    grid-column: col-start 1/ col-end 2; 
+    display: grid; 
+    grid-template-columns: 1fr;  
+    grid-template-rows: auto; 
+    justify-content: center;
+    justify-items: center;  
+    align-items: center;   
+
+    @media only screen and (max-width: 800px){ 
+        grid-row: 2/3; 
+        grid-column: col-start 1/ col-end 12; 
+        grid-template-columns: 1fr 1fr 0fr;
+        justify-items: center; 
+        align-items: center; 
+    } 
+
+    @media only screen and (max-width: 450px){ 
+        grid-row: 3/4; 
+    }
+`; 
+
+const StyledTeacherContainer = styled.div`
+    align-self: start; 
+`; 
+
+const StyledClockContainer = styled.div` 
+     grid-column: 1/-1; 
+
+     @media only screen and (max-width; 800px){ 
+        grid-column: 2/3;
+     }
+`; 
+
+const StyledMainSection = styled.div`
+    margin-top: 4px; 
+    grid-row: 2/3; 
+    grid-column: col-start 3/ col-end 10; 
+
+    @media only screen and (max-width: 800px){ 
+        grid-row: 3/4; 
+        grid-column: col-start 1/ col-end 12; 
+    } 
+
+    @media only screen and (max-width: 450px){ 
+        grid-row: 4/5;
+    }
+` ;
+
+const StyledOptionsContainer = styled.div`
+    grid-column: col-start 3/ col-end 10;  
+    grid-row: 3/-1; 
+    display: grid; 
+    grid-template-columns: auto; 
+
+    @media only screen and (max-width: 800px){ 
+        grid-column: col-start 1 / col-end 12; 
+        grid-row: 4/-1;  
+    } 
+
+    @media only screen and (max-width: 450px){ 
+        grid-row: 5/-1; 
+    }
+`;
+
+//******************* END OF THE STYLED COMPONENTS  */
 
 
 
@@ -1363,160 +1468,63 @@ const toggleIconHandler = () => {
           
          }); 
     }
+} 
+const authContext = useContext(AuthContext);
+let content = <Auth />  
+if(!authContext.isAuth) { 
+    content = (
+        <>
+        <StyledContainer >
+            <Head>
+                <title>Mavis Assessment Test</title>
+                <link rel="icon" href="/favicon.ico" />
+            </Head>
+            <StyledHeaderContainer>
+                <LogoIcon /> 
+                <Welcome header={"The Alphabet"} />
+                <RefreshIcon clicked={refreshHandler} />
+                <ToggleIcon mode={mode} clicked={toggleIconHandler} />
+                <ScoreBoard score={scoreState}/>
+            </StyledHeaderContainer>
+            <StyledSidebar>
+                <StyledTeacherContainer> <Teacher teacher={teacherState} handleClick={teacherClickHandler} type="main" /></StyledTeacherContainer>
+                <StyledClockContainer>
+                    {timerMode === 'countdown' ? <BalloonCountdown continued={countdownState.continue} finished={finishedHandler} ended={countdownState.ended} reset={countdownState.reset} /> : <Clock />}
+                </StyledClockContainer>
+                <LeftShelf />
+            </StyledSidebar>
+            <StyledMainSection>
+                <Board content={boardContentState}
+                    selected={selectedState}
+                    opglow={boardOptionsGlow}
+                    boardTeachers={boardTeacherState}
+                    handleClick={boardOptionClick}
+                    handleTeacherClick={boardTeacherClickHandler}
+                    submit={submitState}
+                    handleSubmitClicked={submitHandler}
+                    mode={boardMode}
+                    score={scoreState}
+                    stageNum={gameStage}
+                    correctPop={correctPop}
+                    wrongPop={wrongPop}
+                />
+            </StyledMainSection> 
+            <StyledOptionsContainer>
+                    <AnswerBox options={alphabetOptionsState} glow={optionsGlow} handleClick={optionClick} />
+            </StyledOptionsContainer>
+        </StyledContainer>
+        </>
+    );
+    
 }
+
 
 
 
 
 // // end correct and wrong methods ///////////
        
-        return (
-            <div className="container">
-                <Head>
-                    <title>Mavis Assessment Test</title>
-                    <link rel="icon" href="/favicon.ico" />
-                </Head>
-                <div className="headerContainer">
-                    {/* <MenuIcon /> */}
-                    <LogoIcon /> 
-                    <Welcome header={"The Alphabet"} />
-                    <RefreshIcon clicked={refreshHandler} />
-                    <ToggleIcon mode={mode} clicked={toggleIconHandler} />
-                    <ScoreBoard score={scoreState}/>
-                </div>
-                <div className="sidebar">
-                    <div className='teacherContainer'> <Teacher teacher={teacherState} handleClick={teacherClickHandler} type="main" /></div>
-                    <div className="clockContainer">
-                        {timerMode === 'countdown' ? <BalloonCountdown continued={countdownState.continue} finished={finishedHandler} ended={countdownState.ended} reset={countdownState.reset} /> : <Clock />}
-                    </div>
-                    <LeftShelf />
-                </div>
-                <div className="mainSection">
-                    <Board content={boardContentState}
-                        selected={selectedState}
-                        opglow={boardOptionsGlow}
-                        boardTeachers={boardTeacherState}
-                        handleClick={boardOptionClick}
-                        handleTeacherClick={boardTeacherClickHandler}
-                        submit={submitState}
-                        handleSubmitClicked={submitHandler}
-                        mode={boardMode}
-                        score={scoreState}
-                        stageNum={gameStage}
-                        correctPop={correctPop}
-                        wrongPop={wrongPop}
-                    />
-                </div> 
-                <div className="optionsContainer">
-                        <AnswerBox options={alphabetOptionsState} glow={optionsGlow} handleClick={optionClick} />
-                </div>
-                <style jsx>{`
-                    .container{ 
-                        //background-color: ${mode==='help' ? '#f5b799' : '#FFF683'}; 
-                        background-color: ${mode==='help' ? '#ffdb99' : 'rgba(207, 217, 30, .7)'};
-                        display: grid; 
-                        grid-template-rows: 6rem 80vh minmax(14vh, min-content); 
-                        grid-template-columns: [full-start] 1fr [center-start] repeat(12, [col-start] minmax(min-content, 14rem) [col-end]) [center-end] 1fr [full-end]; 
-                        transition: background-color 1.5s ;   
-                    }  
-                    .headerContainer{ 
-                        grid-row: 1/2;   
-                        grid-column:full-start/full-end; 
-                        display: grid;  
-                        grid-template-columns: [full-start] 1fr [center-start] repeat(12, [col-start] minmax(min-content, 14rem) [col-end]) [center-end] 1fr [full-end]; 
-                        justify-items: center;
-                        align-items: center; 
-                        border-bottom: 1px solid rgb(229, 228, 226) ; 
-                        background-color: ${mode==='help' ? '#ffedcc' : '#eff3a5'};
-                    }  
-                    .teacherContainer{ 
-                       
-                    }
-                    .sidebar{ 
-                        grid-row: 2/-1; 
-                        grid-column: col-start 1/ col-end 2; 
-                        display: grid; 
-                        grid-template-columns: 1fr;  
-                        grid-template-rows: auto; 
-                        justify-content: center;
-                        justify-items: center;  
-                        align-items: center;   
-                        
-                    }  
-                    
-                    .mainSection{ 
-                        margin-top: 4px; 
-                        grid-row: 2/3; 
-                        grid-column: col-start 3/ col-end 10; 
-                    } 
-                    .teacherContainer{ 
-                        align-self: start; 
-                    }
-
-                    
-                    .clockContainer{ 
-                         grid-column: 1/-1;  
-                    }  
-                    .optionsContainer{ 
-                        grid-column: col-start 3/ col-end 10;  
-                        grid-row: 3/-1; 
-                       // background-color: thistle; 
-                        display: grid; 
-                        grid-template-columns: auto; 
-                    }  
-
-                    @media only screen and (max-width: 800px){ 
-                        .container{ 
-                            grid-template-rows: 6rem 10rem 68vh minmax(10vh, min-content); 
-                        }  
-                        
-                        .sidebar { 
-                            grid-row: 2/3; 
-                            grid-column: col-start 1/ col-end 12; 
-                            grid-template-columns: 1fr 1fr 0fr;
-                            justify-items: center; 
-                            align-items: center; 
-                         
-                        }  
-                        .clockContainer{ 
-                            grid-column: 2/3;
-                        }
-                        .mainSection{ 
-                            grid-row: 3/4; 
-                            grid-column: col-start 1/ col-end 12; 
-                        } 
-
-                        .optionsContainer{ 
-                            
-                            grid-column: col-start 1 / col-end 12; 
-                            grid-row: 4/-1; 
-                        }
-                    } 
-
-                    @media only screen and (max-width: 450px){ 
-                        .container{ 
-                            grid-template-rows: 5rem 5rem 8rem 65vh minmax(8vh, min-content);
-                        } 
-                        .headerContainer{ 
-                            grid-row: 1/3; 
-                            grid-template-rows: 1fr 1fr; 
-                        } 
-                        .sidebar{ 
-                            grid-row: 3/4; 
-                        } 
-                        .mainSection{ 
-                            grid-row: 4/5; 
-                        } 
-                        .optionsContainer{ 
-                            grid-row: 5/-1; 
-                        }
-                        
-                    }
-  
-                `}</style>
-            </div>
-        );
-
+        return content; 
 
     }
 
