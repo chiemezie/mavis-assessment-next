@@ -322,29 +322,7 @@ const Board = (props) => {
             .submitContianer{ 
                 justify-self: center; 
             }
-            {/* @media only screen and (max-width: 900px){ 
-               
-            } 
-
-            @media only screen and (max-width: 700px){ 
-                grid-template-columns: ${props.stageNum===5 ? '.8fr 1.2fr 1.2fr .8fr' : 'auto'}; 
-            }
-
-            @media only screen and (max-width: 600px){ 
-                .board{ 
-                    grid-row: 5/16; 
-                    grid-column: 1/-1;
-                    border-width: 0.8rem; 
-                    padding: .5rem; 
-                }
-            } 
-
-            @media only screen and (max-height: 600px){ 
-                .board{ 
-                    grid-column: 1/-1; 
-                    grid-row-start: 7; 
-                }
-            }  */}
+            
 
         `} </style>
     </>

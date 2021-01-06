@@ -12,15 +12,15 @@ import BalloonCountdown from '../components/ballooncountdown';
 import Board from '../components/greenboard';
 import LeftShelf from '../components/leftShelf';
 import ScoreBoard from '../components/scoreboard'; 
-import RightShelf from '../components/rightShelf'; 
-import BottomShelf from '../components/bottomShelf'; 
-import AnswerBox from '../components/answerbox'; 
-import ReactHowler from 'react-howler'; 
+import AnswerBox from '../components/answerbox';  
 import {updateObject } from '../shared/utility';  
 import swal from 'sweetalert'; 
 import { Howl } from "howler";
 import Auth from '../components/Auth'; 
 import { AuthContext } from '../context/auth-context';
+import styled from "styled-components";
+import {theme} from '../styles/index'; 
+
 
 const helpStageReducer = (state,action) => { 
     // round off the state 
@@ -443,7 +443,12 @@ const [lastClicked, setLastClicked] = useState();
 const [finishedLoadingGameSounds, setFinishedLoadingGameSounds] = useState(false); 
 const [correctScore, dispatchCorrectScore] = useReducer(correctScoresReducer, []); 
 const [wrongScore, dispatchWrongScore] = useReducer(wrongScoresReducer, []); 
-const [currentPlaying, setCurrentPlaying] = useState(null); 
+const [currentPlaying, setCurrentPlaying] = useState(null);  
+
+const Title = styled.h1`
+  font-size: 1.5rem;
+  color: ${theme.colors.dark};
+`;
 
 const refreshHandler = () => { 
     if(mode==='game'){ 
@@ -1367,7 +1372,8 @@ const toggleIconHandler = () => {
     }
 } 
 const authContext = useContext(AuthContext);
-let content = <Auth />  
+let content = <Auth />   
+// ordinarily should show content only if authContect.isAuth change this when working on the final one. 
 if(!authContext.isAuth) { 
     content = (
         <div className="container">
