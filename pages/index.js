@@ -1376,6 +1376,7 @@ let content = <Auth />
 // ordinarily should show content only if authContect.isAuth change this when working on the final one. 
 if(!authContext.isAuth) { 
     content = (
+        <>
         <div className="container">
             <Head>
                 <title>Mavis Assessment Test</title>
@@ -1415,9 +1416,10 @@ if(!authContext.isAuth) {
             <div className="optionsContainer">
                     <AnswerBox options={alphabetOptionsState} glow={optionsGlow} handleClick={optionClick} />
             </div>
+        </div>
             <style jsx>{`
                 .container{ 
-                    //background-color: ${mode==='help' ? '#f5b799' : '#FFF683'}; 
+                 
                     background-color: ${mode==='help' ? '#ffdb99' : 'rgba(207, 217, 30, .7)'};
                     display: grid; 
                     grid-template-rows: 6rem 80vh minmax(14vh, min-content); 
@@ -1434,9 +1436,7 @@ if(!authContext.isAuth) {
                     border-bottom: 1px solid rgb(229, 228, 226) ; 
                     background-color: ${mode==='help' ? '#ffedcc' : '#eff3a5'};
                 }  
-                .teacherContainer{ 
-                   
-                }
+               
                 .sidebar{ 
                     grid-row: 2/-1; 
                     grid-column: col-start 1/ col-end 2; 
@@ -1445,7 +1445,8 @@ if(!authContext.isAuth) {
                     grid-template-rows: auto; 
                     justify-content: center;
                     justify-items: center;  
-                    align-items: center;   
+                    align-items: center;  
+                    background-color: orangered;  
                     
                 }  
                 
@@ -1465,13 +1466,13 @@ if(!authContext.isAuth) {
                 .optionsContainer{ 
                     grid-column: col-start 3/ col-end 10;  
                     grid-row: 3/-1; 
-                   // background-color: thistle; 
                     display: grid; 
                     grid-template-columns: auto; 
                 }  
     
                 @media only screen and (max-width: 800px){ 
                     .container{ 
+                        background-color: thistle; 
                         grid-template-rows: 6rem 10rem 68vh minmax(10vh, min-content); 
                     }  
                     
@@ -1519,7 +1520,8 @@ if(!authContext.isAuth) {
                 }
     
             `}</style>
-        </div>
+        </>
+    
     );
     
 }
