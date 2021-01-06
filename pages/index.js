@@ -323,12 +323,7 @@ const currentQuestionReducer = (state,action) => {
 } 
 //******************* THE STYLED COMPONENTS  */
 const StyledContainer = styled.div`
-     background-color : ${props => {
-         console.log('background color props mode is '+props.mode)
-        // props.mode==='help' ? '#ffdb99' : 'rgba(207, 217, 30, .7)'
-        return '#ffdb99'; 
-         }
-        };
+     background-color : ${props => props.mode==='help' ? '#ffdb99' : 'rgba(207, 217, 30, .7)'};
      display: grid; 
      grid-template-rows: 6rem 80vh minmax(14vh, min-content); 
      grid-template-columns: [full-start] 1fr [center-start] repeat(12, [col-start] minmax(min-content, 14rem) [col-end]) [center-end] 1fr [full-end];
@@ -1474,12 +1469,12 @@ let content = <Auth />
 if(!authContext.isAuth) { 
     content = (
         <>
-        <StyledContainer >
+        <StyledContainer mode={mode}>
             <Head>
                 <title>Mavis Assessment Test</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <StyledHeaderContainer>
+            <StyledHeaderContainer mode={mode}>
                 <LogoIcon /> 
                 <Welcome header={"The Alphabet"} />
                 <RefreshIcon clicked={refreshHandler} />
