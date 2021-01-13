@@ -31,7 +31,7 @@ const talk = keyframes`
 `
 
 
-const STeacher = styled.div`
+const StyledTeacher = styled.div`
 width: ${props => props.type==='main' ? '20rem' : '12rem'}; 
 height: ${props => props.type==='main' ? '20rem' : '12rem'};  
 background: no-repeat center/100% url("teacher1.svg");
@@ -48,25 +48,10 @@ cursor: pointer;
     height: 8rem; 
 }
 `; 
-const Teacher = (props) => {
-   
-    let classes = ["main"]; 
-
-    if(props.teacher.glow){ 
-        classes.push("glow"); 
-    }  
-    if(props.teacher.talk){ 
-        classes.push("talk"); 
-    } 
+const Teacher = (props) => { 
  const sprops = useSpring({opacity: 1, from: {opacity: 0}}); 
-
-    return(
-        <>   
-            <STeacher  {...props} onClick={props.handleClick}/>
-            
-        </>
-        
-    );
+    return <StyledTeacher  {...props} onClick={props.handleClick}/> ;
+    
 }  
 
 export default Teacher;  

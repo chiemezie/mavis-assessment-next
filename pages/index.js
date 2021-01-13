@@ -328,9 +328,11 @@ const StyledContainer = styled.div`
      grid-template-rows: 6rem 80vh minmax(14vh, min-content); 
      grid-template-columns: [full-start] 1fr [center-start] repeat(12, [col-start] minmax(min-content, 14rem) [col-end]) [center-end] 1fr [full-end];
      transition: background-color 1.5s ;
+
      @media only screen and (max-width: 800px) { 
         grid-template-rows: 6rem 10rem 68vh minmax(10vh, min-content); 
      } 
+
      @media only screen and (max-width: 450px) { 
         grid-template-rows: 5rem 5rem 8rem 65vh minmax(8vh, min-content); 
      }
@@ -382,7 +384,7 @@ const StyledTeacherContainer = styled.div`
 const StyledClockContainer = styled.div` 
      grid-column: 1/-1; 
 
-     @media only screen and (max-width; 800px){ 
+     @media only screen and (max-width: 800px){ 
         grid-column: 2/3;
      }
 `; 
@@ -686,17 +688,12 @@ useEffect(()=> {
 
 
 const  playCorrectScoreSound = (score) => { 
-    // form the score url 
-    // const scoreUrl = `https://mavis-assessment.s3.eu-west-2.amazonaws.com/audio/cor${score}.mp3`; 
-    // dispatchCurrentGameSound({type: 'PLAY', sound: scoreUrl, stype: 'correct'}); 
     correctScore[score].play();
     setCurrentPlaying(correctScore[score]);
     setCorrectPop(true); 
 } 
 
 const  playWrongScoreSound = (score) => { 
-    // const scoreUrl = `https://mavis-assessment.s3.eu-west-2.amazonaws.com/audio/wor${score}.mp3`; 
-    // dispatchCurrentGameSound({type: 'PLAY', sound: scoreUrl, stype: 'wrong'}); 
     wrongScore[score].play(); 
     setCurrentPlaying(wrongScore[score]); 
     setWrongPop(true); 
@@ -1362,10 +1359,10 @@ const checkAnswer = () => {
         
     }   
 
-  const  handleBoardAudioPlay = () => { 
-        // get the teacher to talk 
-       dispatchBoardTeacher({type: 'TALK', ind: currentBoardSoundState.bid});
-    }
+//   const  handleBoardAudioPlay = () => { 
+//         // get the teacher to talk 
+//        dispatchBoardTeacher({type: 'TALK', ind: currentBoardSoundState.bid});
+//     }
 
    
 
