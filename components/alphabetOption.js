@@ -40,7 +40,7 @@ const SmallAlphabet = styled.div`
     opacity: ${props => props.show ? 1 : 0}; 
     transition: visibility .4s, opacity .4s ease-in-out; 
     cursor: pointer; 
-    max-width: 10rem;  
+    max-width: 12rem;  
     ${props => props.glow? css`animation: ${glow} 1.5s linear infinite`: null }; 
 
     @media only screen and (max-width: 800px){ 

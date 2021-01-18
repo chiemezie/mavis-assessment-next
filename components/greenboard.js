@@ -152,6 +152,10 @@ const StyledMainBoardContainer = styled.div`
 
 const StyledSubmitContainer = styled.div`
     justify-self: center; 
+`; 
+
+const StyledUl = styled.ul`
+    list-style-type: none; 
 `;
 
 /******END OF STYLED COMPONENTS FOR MAIN BOARD  */
@@ -225,11 +229,9 @@ const Board = (props) => {
                     <TeacherAndText key={index} teacher={props.boardTeachers[index]} sound={cont.soundArray ? true : false} handleTeacherClick={() => props.handleTeacherClick(index)}>{cont.text}</TeacherAndText>
                 )
                 ) : null}
-                <ul>
-                    {listTransitions? listTransitions((styles, item) => (
-                        <animated.li style={styles}>{item}</animated.li>
-                    )): null}
-                </ul>
+                <StyledUl>
+                    {listTransitions? listTransitions((styles, item) => (<animated.li style={styles}>{item}</animated.li>)): null}
+                </StyledUl>
 
                 <StyledSubmitContainer >
                     {props.submit.show ? <SubmitLock glow={props.submit.glow} clicked={props.handleSubmitClicked} submitted={props.submit.submitted} /> : null}
