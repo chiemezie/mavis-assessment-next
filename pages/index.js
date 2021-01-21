@@ -1,65 +1,123 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import styled,{keyframes} from 'styled-components'; 
+import {useSpring,animated,config} from 'react-spring';
+import LogoHeader from '../components/homepage/logoheader'; 
+import GameC from '../components/homepage/Game/Game'; 
+import Link from 'next/link'; 
 
-export default function Home() {
-  return (
-    <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
+//******************* STYLED COMPONENTS */ 
+const Background = styled.div`
+    background-color: orange; 
+    display: flex; 
+    height: 100vh; 
+    grid-template-colums: auto; 
+    align-items: center; 
+`;  
 
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
 
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
+const walk = keyframes` 
+    0%{ 
+        background: no-repeat center/100% url("walker2.svg");
+    }  
+    25%{ 
+        background: no-repeat center/100% url("walker3.svg");
+    }
+    50%{ 
+        background: no-repeat center/100% url("walker2.svg");
+    }  
+    75%{ 
+        background: no-repeat center/100% url("walker.svg");
+    }
+    100%{ 
+        background: no-repeat center/100% url("walker2.svg");
+    }
+`
 
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
 
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
+const Boy = styled(animated.div)`
+    position: absolute; 
+    left: 10% ; 
+    top: 50%; 
+    width: 5.8%; 
+    height: 30%; 
+    z-index: 15; 
+    background: no-repeat center/100% url("walker2.svg"); 
+    animation: ${walk} 1s 5.5 forwards; 
+     
+`;  
 
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
+const Father = styled.div`
+    position: absolute; 
+    left: 42%; 
+    top: 23%; 
+    width: 25%; 
+    height: 75%; 
+    z-index: 15; 
+    background: no-repeat center/100% url("fatherHouse1.svg"); 
+`; 
 
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
-    </div>
-  )
-}
+
+const Games = styled(animated.div)`
+display: flex;
+flex-flow: column; 
+justify-content: center;
+align-items: center;
+width: 30rem;
+margin: 5% auto; 
+top: 15%; 
+left: 80%; 
+position: absolute; 
+`; 
+
+const StyledLink = styled.a`
+    color: inherit; 
+    text-decoration: none; 
+    display: inline-block; 
+    width: 30rem; 
+
+`; 
+
+
+
+
+//******************* END OF STYLED COMPONENTS */
+
+const Index = (props) => { 
+
+   const propsBoy = useSpring({ 
+        config: {duration: 5000},
+        from: {left: "5%"},
+        to: {left: "35%"}
+    }) ;     
+    const propsGames = useSpring({ 
+        config: config.wobbly, 
+        delay: 5600, 
+        from: {transform: 'scale(0)' },
+        to: {transform: 'scale(1)'}
+    })
+    return(
+        <Background>
+            <LogoHeader />
+            <Boy style={propsBoy} />
+            <Father />
+            <Games style={propsGames} >
+                <Link href="/english">
+                    <StyledLink>
+                        <GameC img="child3a.svg" title="English" />
+                    </StyledLink>
+
+                </Link>
+                <Link href="/math">
+                    <StyledLink>
+                        <GameC img="child7.svg" title="Math" />
+                    </StyledLink>
+
+                </Link>
+
+            </Games>
+
+        </Background>
+    )
+} ; 
+
+export default Index; 
