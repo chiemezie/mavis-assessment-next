@@ -1,17 +1,32 @@
 import styled from 'styled-components'; 
 import {useSpring, animated, config} from 'react-spring';  
 
-//******* STYLED COMPONENTS */ 
-const Logo = styled(animated.div)` 
-background:  no-repeat center/100% url("logo2.svg"); 
-position: absolute; 
+//******* STYLED COMPONENTS */  
+
+const Container = styled(animated.div)` 
+    position: absolute; 
 top: 2%; 
 left: 50%;
 transform: translateX(-50%);  
 margin: auto; 
 width:25%; 
-height: 25%; 
-`;  
+height: 25%;  
+display: flex; 
+flex-direction: column; 
+`; 
+
+const Logo = styled(animated.div)` 
+background:  no-repeat center/100% url("logo2.svg"); 
+width: 100%; 
+height: 100%; 
+margin-bottom: 15px; 
+`;   
+
+const UnderText = styled.p` 
+    font-size: 2rem; 
+    font-style: italic; 
+    font-weight: 700; 
+`
 
 
 //********END OF STYLED COMPONENTS */
@@ -27,7 +42,12 @@ const LogoHeader = () => {
         }
     )
     return ( 
-       <Logo style={propsLogo}/> 
+    
+       <Container style={propsLogo}>
+           <Logo/> 
+           <UnderText>Come and Learn...</UnderText>
+       </Container> 
+    
     );  
 } 
 
