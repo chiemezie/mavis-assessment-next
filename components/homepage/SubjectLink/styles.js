@@ -4,19 +4,14 @@ export const SubjectContainer  = styled.div`
   border-radius: 15px;
   background-color: white;
   border: 5px solid #cecece;
-  width: 50%;
   padding: 5px;
   display: grid;  
-
-  @media only screen and (max-width: 900px){ 
-    width: 46%; 
-  }
 `;    
 
 export const LettersContainer = styled.div`
    display: grid; 
-   grid-template-rows: repeat(2, 1fr); 
-   grid-template-columns: repeat(2, 1fr);  
+   grid-template-rows: repeat(2, min-content); 
+   grid-template-columns: repeat(2, min-content);  
    border-top: 4px solid rgba(25, 113, 157); 
    border-left: 4px solid rgba(25, 113, 157); 
     cursor: pointer;
@@ -24,7 +19,7 @@ export const LettersContainer = styled.div`
     transform: scale(1);
     &:hover {
       transform: scale(1.1);
-    }
+    } 
 `;
 
 export const SubjectLetter = styled.div`
@@ -36,6 +31,7 @@ export const SubjectLetter = styled.div`
     display: grid; 
     align-items: center; 
     justify-items: center; 
+    padding: 1rem 2rem; 
 
     @media only screen and (max-width: 900px){ 
         font-size: 3rem; 
