@@ -1,5 +1,4 @@
 import {Component} from 'react'; 
-import {updateObject} from '../shared/utility';
 
 class Countdown extends Component { 
      // set the state  
