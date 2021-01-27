@@ -39,7 +39,7 @@ const StyledSvg = styled.svg`
     animation: ${pointUp} 1.5s infinite;  
     display: ${props=> props.show ? 'block' : 'none'};  
 
-    @media only screen and (min-height: 400px){ 
+    @media only screen and (min-height: 430px){ 
         @media only screen and (max-width: 800px ){ 
         transform: rotate(-90deg) scaleX(-1); 
         grid-column: 2/3; 

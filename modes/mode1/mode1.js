@@ -300,8 +300,8 @@ const StyledContainer = styled.div`
      grid-template-columns: [full-start] 1fr [center-start] repeat(12, [col-start] minmax(min-content, 14rem) [col-end]) [center-end] 1fr [full-end];
      transition: background-color 1.5s ; 
     
-     @media only screen and (min-height: 350px){ 
-        grid-template-rows: 20vh 65vh 25vh;  
+     @media only screen and (min-height: 320px){ 
+        grid-template-rows: 20vh 65vh minmax(25vh, min-content);  
 
     }  
 
@@ -351,7 +351,7 @@ const StyledHeaderContainer = styled.div`
     align-items: center; 
     border-bottom: 1px solid rgb(229, 228, 226) ; 
     background-color: ${props => props.mode==='help' ? '#ffedcc' : '#eff3a5'}; 
-
+    
     @media only screen and (max-width: 450px){ 
         grid-row: 1/3; 
         grid-template-rows: 1fr 1fr;
@@ -369,7 +369,7 @@ const StyledSidebar = styled.div`
     align-items: center;   
     padding: .5rem; 
 
-    @media only screen and (min-height: 400px){ 
+    @media only screen and (min-height: 420px){ 
         @media only screen and (max-width: 800px){ 
         grid-row: 2/3; 
         display: grid; 
@@ -404,7 +404,7 @@ const StyledMainSection = styled.div`
     grid-row: 2/3; 
     grid-column: col-start 3/ col-end 10; 
      
-    @media only screen and (min-height: 400px){ 
+    @media only screen and (min-height: 420px){ 
         @media only screen and (max-width: 800px){ 
         grid-row: 3/4; 
         grid-column: col-start 1/ col-end 12; 
@@ -424,7 +424,7 @@ const StyledOptionsContainer = styled.div`
     grid-template-columns: auto; 
     align-items: center; 
     
-    @media only screen and (min-height: 400px){ 
+    @media only screen and (min-height: 420px){ 
         @media only screen and (max-width: 800px){ 
         grid-column: col-start 1 / col-end 12; 
         grid-row: 4/-1;  
