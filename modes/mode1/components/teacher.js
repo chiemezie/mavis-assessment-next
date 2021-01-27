@@ -5,20 +5,24 @@ import styled, {keyframes, css} from "styled-components";
 const glow = keyframes`
         0% { 
             transform:  scale(1); 
+           
         } 
 
         50% { 
             transform:scale(.9);
+        
         }
 
         100% { 
             transform: scale(1); 
+            
         } 
 `  
 
 const talk = keyframes`
         0% { 
             background: no-repeat center/100% url("teacher1.svg");
+           
         }
 
         30% { 
@@ -37,7 +41,11 @@ height: ${props => props.type==='main' ? '20rem' : '12rem'};
 background: no-repeat center/100% url("teacher1.svg");
 ${props => props.teacher.glow? css`animation: ${glow} 1.5s linear infinite`: null }; 
 ${props => props.teacher.talk? css`animation: ${talk} .3s infinite`: null}; 
-cursor: pointer;   
+box-shadow: ${props=>props.type==='main' ? '0 0 15px #d35400' : null};
+
+cursor: pointer; 
+
+border-radius: 50%; 
 @media only screen and (max-width: 800px){
     width: ${props => props.type==='main' ? '10rem' : '8rem'}; 
     height: ${props => props.type==='main' ? '10rem' : '8rem'};  

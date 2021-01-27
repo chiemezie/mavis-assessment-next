@@ -61,6 +61,8 @@ const    clock = () => {
                         gap: .4rem; 
                         color: black;
                         margin-top: 10px; 
+                        border-radius: 50%; 
+                        padding: 1rem; 
                     } 
 
                     .clock__main{ 
@@ -99,8 +101,9 @@ const    clock = () => {
                     }
                     @media only screen and (max-width: 400px){ 
                         .clock{ 
-                            width: 7rem; 
-                            height: 4.67rem; 
+                            width: 8.5rem; 
+                            height: 6rem; 
+                           
                         }
                         .clock__main{ 
                             font-size: 1.94rem; 

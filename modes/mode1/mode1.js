@@ -12,6 +12,7 @@ import Board from './components/greenboard';
 import LeftShelf from './components/leftShelf';
 import ScoreBoard from './components/scoreboard';  
 import AnswerBox from './components/answerbox';  
+import Pointer from './components/pointer'; 
 import {updateObject } from '../../shared/utility';  
 import swal from 'sweetalert'; 
 import { Howl } from "howler";
@@ -191,7 +192,6 @@ const wrongScoresReducer = (state, action) => {
     }
 }
 
-const initialCurrentBoardSoundState = {playing: false, sound: 'https://mavis-assessment.s3.eu-west-2.amazonaws.com/audio/tapa.mp3', bid: 0};
 const currentBoardSoundReducer = (state, action) => { 
     switch(action.type){ 
         case 'PLAY': 
@@ -296,17 +296,34 @@ const currentQuestionReducer = (state,action) => {
 const StyledContainer = styled.div`
      background-color : ${props => props.mode==='help' ? '#ffdb99' : 'rgba(207, 217, 30, .7)'};
      display: grid; 
-     grid-template-rows: 6rem 80vh minmax(14vh, min-content); 
+     grid-template-rows: 6vh 70vh 24vh;   
      grid-template-columns: [full-start] 1fr [center-start] repeat(12, [col-start] minmax(min-content, 14rem) [col-end]) [center-end] 1fr [full-end];
-     transition: background-color 1.5s ;
+     transition: background-color 1.5s ; 
+    
+     @media only screen and (min-height: 500px){ 
+        grid-template-rows: 10vh 65vh 25vh;  
+        @media only screen and (max-width: 800px){ 
+            grid-template-rows: 9vh 9vh 14vh 50vh 18vh; 
+        }
+    }   
 
-     @media only screen and (max-width: 800px) { 
-        grid-template-rows: 6rem 10rem 68vh minmax(10vh, min-content); 
-     } 
+     @media only screen and (min-height: 800px){ 
+        @media only screen and (max-width: 800px) { 
+        grid-template-rows: 7vh 12vh 62vh 19vh; 
+      } 
 
      @media only screen and (max-width: 450px) { 
-        grid-template-rows: 5rem 5rem 8rem 65vh minmax(8vh, min-content); 
-     }
+        grid-template-rows: 8vh 8vh 12vh 60vh 12vh; 
+      }
+    } 
+
+    
+
+
+
+    
+     
+    
 ` 
 
 const StyledHeaderContainer = styled.div`
@@ -334,11 +351,13 @@ const StyledSidebar = styled.div`
     justify-content: center;
     justify-items: center;  
     align-items: center;   
+    padding: .5rem; 
 
     @media only screen and (max-width: 800px){ 
         grid-row: 2/3; 
+        display: grid; 
         grid-column: col-start 1/ col-end 12; 
-        grid-template-columns: 1fr 1fr 0fr;
+        grid-template-columns: min-content 1fr 1fr;
         justify-items: center; 
         align-items: center; 
     } 
@@ -356,7 +375,7 @@ const StyledClockContainer = styled.div`
      grid-column: 1/-1; 
 
      @media only screen and (max-width: 800px){ 
-        grid-column: 2/3;
+        grid-column: 3/4;
      }
 `; 
 
@@ -380,6 +399,7 @@ const StyledOptionsContainer = styled.div`
     grid-row: 3/-1; 
     display: grid; 
     grid-template-columns: auto; 
+    align-items: center; 
 
     @media only screen and (max-width: 800px){ 
         grid-column: col-start 1 / col-end 12; 
@@ -417,6 +437,7 @@ const Lesson1 = ({data}) => {
     const [soundMode, setSoundMode] = useState(''); 
     const [gameSoundMode, setGameSoundMode] = useState('');   
     const [answers, setAnswers] = useState([]); 
+    const [showPointer, setShowPointer] = useState(true); 
 
 
 const [currentQuestion, dispatchCurrentQuestion] = useReducer(currentQuestionReducer, {qid: 1, aid: 1});    
@@ -467,7 +488,6 @@ const refreshHandler = () => {
                 currentPlaying.stop(); 
                 dispatchTeacher({type:'RESET'});
                 // make the button refresh 
-             //    dispatchCountdown({type: 'SET_RESET'}); 
                // set the game stage to 0 
                dispatchGameStage({type:'SET', num:0});
               } 
@@ -581,9 +601,10 @@ useEffect(()=> {
 
         //check if it's the game stage. 
         else if(mode==='game'){ 
+             
             if(gameStage===1){  
                 // question has been asked.. start the countdown 
-                dispatchCountdown({type: 'CONTINUE'}); 
+                dispatchCountdown({type: 'CONTINUE'});
                 // this is the stage where the question was asked. We want to take it to the stage where the learner can select an answer. 
                 if(!countdownState.ended){ 
                   dispatchGameStage({type:'ADD'}); 
@@ -718,13 +739,18 @@ const executeHelpStage = useCallback((stageNum) => {
         dispatchHelpStage({type: 'SET', num: 1});  
 
         // set the board color 
-        setBoardMode("default"); 
+        setBoardMode("default");  
+        // set the pointer to show 
+       setShowPointer(true); 
+
+
     }
     // sort out the different stages 
     else if(stageNum===1){  
        dispatchTeacher({type: 'GLOW'});
        const initialQuestion = {aid: data.questions[0].aid, qid: data.questions[0].qid}
        dispatchCurrentQuestion({type: 'SET', question:initialQuestion});  
+
     } 
     else if(stageNum===2){  
         // set the options to glow
@@ -944,12 +970,14 @@ useEffect(() => {
     
 const  teacherClickHandler = () => { 
        // set the person talking to be the main teacher
-       setLastClicked('teacher'); 
+        setLastClicked('teacher'); 
         setTalker('default');
         // check if the mode is help first 
         if(mode === 'help'){ 
             if(helpStage===1){  
-                playSound(0);
+                playSound(0); 
+                // remove the pointer 
+                setShowPointer(false); 
             }
         }
     };  
@@ -1158,7 +1186,7 @@ const checkAnswer = () => {
         // check if the user can submit 
         if (submitState.canSubmit) { 
             // pause the time until the user hears the next question 
-            dispatchCountdown({type:'PAUSE'}); 
+           // dispatchCountdown({type:'PAUSE'}); 
             setBoardOptionsGlow(false); 
             // set the submitted to true and stop the glowing
             dispatchSubmit({type: 'SET_SUBMITTED'}); 
@@ -1318,6 +1346,8 @@ const toggleIconHandler = () => {
               
              setMode('game'); 
              dispatchHelpStage({type: 'SET', num:0}); 
+             // remove the hand as well 
+             setShowPointer(false); 
             } 
             else{ 
                 // continue the game that was paused
@@ -1370,8 +1400,9 @@ if(!authContext.isAuth) {
             </StyledHeaderContainer>
             <StyledSidebar>
                 <StyledTeacherContainer> <Teacher teacher={teacherState} handleClick={teacherClickHandler} type="main" /></StyledTeacherContainer>
+                <Pointer show={showPointer}/> 
                 <StyledClockContainer>
-                    {timerMode === 'countdown' ? <BalloonCountdown continued={countdownState.continue} finished={finishedHandler} ended={countdownState.ended} reset={countdownState.reset} /> : <Clock />}
+                    {timerMode === 'countdown' ? <BalloonCountdown continued={countdownState.continue} finished={finishedHandler} ended={countdownState.ended} reset={countdownState.reset} /> :null}
                 </StyledClockContainer>
                 <LeftShelf />
             </StyledSidebar>
