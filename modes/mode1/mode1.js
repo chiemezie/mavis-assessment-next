@@ -313,7 +313,7 @@ const StyledContainer = styled.div`
       } 
 
      @media only screen and (max-width: 450px) { 
-        grid-template-rows: 8vh 8vh 12vh 60vh 12vh; 
+        grid-template-rows: 7vh 7vh 11vh 60vh 14vh; 
       }
     } 
 
