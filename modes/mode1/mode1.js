@@ -307,7 +307,17 @@ const StyledContainer = styled.div`
         }
     }   
 
-     @media only screen and (min-height: 650px){ 
+     @media only screen and (min-height: 800px){ 
+        @media only screen and (max-width: 800px) { 
+        grid-template-rows: 7vh 12vh 62vh 19vh; 
+      } 
+
+     @media only screen and (max-width: 450px) { 
+        grid-template-rows: 7vh 7vh 10vh 56vh 18vh; 
+      }
+    } 
+
+    @media only screen and (min-height: 650px){ 
         @media only screen and (max-width: 800px) { 
         grid-template-rows: 7vh 12vh 62vh 19vh; 
       } 
@@ -316,6 +326,7 @@ const StyledContainer = styled.div`
         grid-template-rows: 8vh 8vh 12vh 56vh 14vh; 
       }
     } 
+
 
     
 
