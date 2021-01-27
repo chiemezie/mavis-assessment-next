@@ -300,6 +300,13 @@ const StyledContainer = styled.div`
      grid-template-columns: [full-start] 1fr [center-start] repeat(12, [col-start] minmax(min-content, 14rem) [col-end]) [center-end] 1fr [full-end];
      transition: background-color 1.5s ; 
     
+     @media only screen and (min-height: 350px){ 
+        grid-template-rows: 20vh 65vh 25vh;  
+        @media only screen and (max-width: 800px){ 
+            grid-template-rows: 9vh 9vh 14vh 50vh 18vh; 
+        }
+    }  
+
      @media only screen and (min-height: 500px){ 
         grid-template-rows: 10vh 65vh 25vh;  
         @media only screen and (max-width: 800px){ 
