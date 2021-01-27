@@ -37,8 +37,10 @@ const StyledSvg = styled.svg`
     align-self: start; 
     fill: #218E8A;  
     animation: ${pointUp} 1.5s infinite;  
-    display: ${props=> props.show ? 'block' : 'none'}; 
-    @media only screen and (max-width: 800px ){ 
+    display: ${props=> props.show ? 'block' : 'none'};  
+
+    @media only screen and (min-height: 400px){ 
+        @media only screen and (max-width: 800px ){ 
         transform: rotate(-90deg) scaleX(-1); 
         grid-column: 2/3; 
         width: 4rem; 
@@ -48,6 +50,8 @@ const StyledSvg = styled.svg`
         margin-left: 2rem; 
         animation: ${pointSide} 1.5s infinite; 
     }
+    }
+   
 `
 //*** END OF STYLED COMPONENTS */
 

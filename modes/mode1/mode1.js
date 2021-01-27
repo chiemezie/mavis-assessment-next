@@ -302,9 +302,7 @@ const StyledContainer = styled.div`
     
      @media only screen and (min-height: 350px){ 
         grid-template-rows: 20vh 65vh 25vh;  
-        @media only screen and (max-width: 800px){ 
-            grid-template-rows: 9vh 9vh 14vh 50vh 18vh; 
-        }
+
     }  
 
      @media only screen and (min-height: 500px){ 
@@ -371,7 +369,8 @@ const StyledSidebar = styled.div`
     align-items: center;   
     padding: .5rem; 
 
-    @media only screen and (max-width: 800px){ 
+    @media only screen and (min-height: 400px){ 
+        @media only screen and (max-width: 800px){ 
         grid-row: 2/3; 
         display: grid; 
         grid-column: col-start 1/ col-end 12; 
@@ -383,6 +382,9 @@ const StyledSidebar = styled.div`
     @media only screen and (max-width: 450px){ 
         grid-row: 3/4; 
     }
+    }
+
+   
 `; 
 
 const StyledTeacherContainer = styled.div`
@@ -401,8 +403,9 @@ const StyledMainSection = styled.div`
     margin-top: 4px; 
     grid-row: 2/3; 
     grid-column: col-start 3/ col-end 10; 
-
-    @media only screen and (max-width: 800px){ 
+     
+    @media only screen and (min-height: 400px){ 
+        @media only screen and (max-width: 800px){ 
         grid-row: 3/4; 
         grid-column: col-start 1/ col-end 12; 
     } 
@@ -410,6 +413,8 @@ const StyledMainSection = styled.div`
     @media only screen and (max-width: 450px){ 
         grid-row: 4/5;
     }
+    }
+    
 ` ;
 
 const StyledOptionsContainer = styled.div`
@@ -418,8 +423,9 @@ const StyledOptionsContainer = styled.div`
     display: grid; 
     grid-template-columns: auto; 
     align-items: center; 
-
-    @media only screen and (max-width: 800px){ 
+    
+    @media only screen and (min-height: 400px){ 
+        @media only screen and (max-width: 800px){ 
         grid-column: col-start 1 / col-end 12; 
         grid-row: 4/-1;  
     } 
@@ -427,6 +433,9 @@ const StyledOptionsContainer = styled.div`
     @media only screen and (max-width: 450px){ 
         grid-row: 5/-1; 
     }
+    }
+
+  
 `;
 
 //******************* END OF THE STYLED COMPONENTS  */ 
